@@ -1,40 +1,35 @@
-package com.tienda.tiendaJuegos.model;
+package com.tienda.tiendaJuegos.dto;
 
 import com.tienda.tiendaJuegos.model.enums.Category;
 import com.tienda.tiendaJuegos.model.enums.Condition;
 import com.tienda.tiendaJuegos.model.enums.Tag;
-import jakarta.persistence.*;
-import lombok.*;
+
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class ProductDTO {
     private Long id;
 
+    @NotNull(message = "Name cannot be null")
+    @Size(min = 3, message = "Name must not be empty")
     private String name;
+
     private String description;
-
-    @Enumerated(EnumType.STRING)
     private Condition condition;
-
-    @Enumerated(EnumType.STRING)
     private Category category;
-
-    @ElementCollection
-    @Enumerated(EnumType.STRING)
     private List<Tag> tags;
-
     private double price;
     private int stock;
     private String imageUrl;
     private String averageRating;
 
 }
+
