@@ -6,14 +6,16 @@ public enum Tag {
     PS3,
     PS4,
     PS5,
+    PSP,
+    PSVITA,
     PLAYSTATION,
     NINTENDO,
     SWITCH,
     WII,
+    WIIU,
     XBOX,
     XBOX360,
     XBOXONE,
     XBOXSERIESX,
-    PC,
-
+    PC
 }
