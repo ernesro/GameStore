@@ -58,4 +58,58 @@ public class ProductController {
     public ResponseEntity<List<ProductDTO>> findAllProducts() {
         return ResponseEntity.ok(productService.findAllProducts());
     }
+
+    /**
+     * Find product by ID.
+     *
+     * @param id Product ID.
+     * @return ProductDTO.
+     */
+    @Operation(summary = "Find product by ID", description = "Returns a product by ID.",
+            operationId = "findProductById", tags = { "products" }, responses = {
+                    @ApiResponse(responseCode = "200", description = "Product found", content = @Content(
+                            mediaType = "application/json", schema = @Schema(implementation = ProductDTO.class))
+                    )
+            }
+    )
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductDTO> findProductById(@PathVariable Long id) {
+        return ResponseEntity.ok(productService.findProductById(id));
+    }
+
+    /**
+     * Update a product.
+     *
+     * @param updatedProductDTO Data Transfer Object containing updated product details.
+     * @return The updated ProductDTO.
+     */
+    @Operation(summary = "Update a product", description = "Updates a product with the provided details.",
+            operationId = "updateProduct", tags = { "products" }, responses = {
+                    @ApiResponse(responseCode = "200", description = "Product updated successfully", content = @Content(
+                            mediaType = "application/json", schema = @Schema(implementation = ProductDTO.class))
+                    )
+            }
+    )
+    @PutMapping
+    public ResponseEntity<ProductDTO> updateProduct(@Valid @RequestBody ProductDTO updatedProductDTO) {
+        ProductDTO updatedProduct = productService.updateProduct(updatedProductDTO);
+        return ResponseEntity.ok(updatedProduct);
+    }
+
+    /**
+     * Delete a product.
+     *
+     * @param id Product ID.
+     * @return ResponseEntity.
+     */
+    @Operation(summary = "Delete a product", description = "Deletes a product by ID.",
+            operationId = "deleteProduct", tags = { "products" }, responses = {
+                    @ApiResponse(responseCode = "200", description = "Product deleted successfully")
+            }
+    )
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+        productService.deleteProduct(id);
+        return ResponseEntity.ok().build();
+    }
 }

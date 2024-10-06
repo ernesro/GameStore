@@ -1,8 +1,8 @@
 package com.gameStore.ernestasUrbonas.service;
 
-import com.gameStore.ernestasUrbonas.model.Product;
 import com.gameStore.ernestasUrbonas.dto.ProductDTO;
 import com.gameStore.ernestasUrbonas.exception.EntityNotFoundException;
+import com.gameStore.ernestasUrbonas.model.Product;
 import com.gameStore.ernestasUrbonas.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
