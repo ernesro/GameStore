@@ -8,7 +8,7 @@ public enum Tag {
     PS5,
     PLAYSTATION,
     NINTENDO,
-    SWITCH,
+    NINTENDO_SWITCH,
     WII,
     XBOX,
     XBOX360,

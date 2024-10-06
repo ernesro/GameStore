@@ -4,7 +4,10 @@ import com.tienda.tiendaJuegos.model.enums.Category;
 import com.tienda.tiendaJuegos.model.enums.Condition;
 import com.tienda.tiendaJuegos.model.enums.Tag;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
@@ -35,6 +38,6 @@ public class Product {
     private double price;
     private int stock;
     private String imageUrl;
-    private String averageRating;
+    private double averageRating;
 
 }
