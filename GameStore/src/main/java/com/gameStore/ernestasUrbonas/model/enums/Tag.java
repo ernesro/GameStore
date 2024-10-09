@@ -10,10 +10,18 @@ public enum Tag {
     NINTENDO,
     NINTENDO_SWITCH,
     WII,
+    WIIU,
     XBOX,
     XBOX360,
     XBOXONE,
     XBOXSERIESX,
     PC,
-
+    HORROR,
+    ACTION,
+    ADVENTURE,
+    RPG,
+    STRATEGY,
+    SIMULATION,
+    SPORTS,
+    RACING
 }

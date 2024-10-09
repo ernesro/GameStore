@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
  */
 @Service
 public class ProductService {
+
     private final ProductRepository productRepository;
 
     @Autowired
@@ -121,5 +122,4 @@ public class ProductService {
                     product.getAverageRating()
             );
     }
-
 }
