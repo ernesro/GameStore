@@ -1,4 +1,4 @@
-package com.gameStore.ernestasUrbonas.auth;
+package com.gameStore.ernestasUrbonas.dto;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,7 +1,7 @@
 package com.gameStore.ernestasUrbonas.controller;
 
-import com.gameStore.ernestasUrbonas.auth.AuthRequest;
-import com.gameStore.ernestasUrbonas.auth.AuthResponse;
+import com.gameStore.ernestasUrbonas.dto.AuthRequest;
+import com.gameStore.ernestasUrbonas.dto.AuthResponse;
 import com.gameStore.ernestasUrbonas.service.JwtService;
 import com.gameStore.ernestasUrbonas.service.UserService;
 import org.springframework.http.HttpStatus;
