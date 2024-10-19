@@ -1,6 +1,6 @@
 package com.gameStore.ernestasUrbonas.configuration;
 
-import com.gameStore.ernestasUrbonas.service.UserService;
+import com.gameStore.ernestasUrbonas.service.CustomUserDetailService;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,13 +13,20 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
 import javax.crypto.spec.SecretKeySpec;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -29,42 +36,37 @@ public class WebSecurityConfig {
             "/v3/api-docs/**",
             "/swagger-ui/**",
             "/v2/api-docs/**",
-            "/swagger-resources/**"
+            "/swagger-resources/**",
+            "/auth/login"
     };
 
-    private final AuthenticationConfiguration authConfiguration;
-    private final UserService userService;
+    private final CustomUserDetailService customUserDetailService;
 
     @Value("${jwt.secret}")
     private String secretKey;
 
     @Autowired
-    public WebSecurityConfig(AuthenticationConfiguration authConfiguration, UserService userService) {
-        this.authConfiguration = authConfiguration;
-        this.userService = userService;
+    public WebSecurityConfig(CustomUserDetailService customUserDetailService) {
+        this.customUserDetailService = customUserDetailService;
     }
-
-    /*@Bean
-    public AuthenticationManager authenticationManager() throws Exception {
-        return authConfiguration.getAuthenticationManager();
-    }*/
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers(AUTH_WHITE_LIST).permitAll()
-                        .requestMatchers("/api/public").permitAll()
-                        .requestMatchers("/auth/login").permitAll()
-                        .requestMatchers("/api/private").hasRole("ADMIN")
-                        .requestMatchers("/api/manager").hasRole("MANAGER")
-                        .requestMatchers("/api/admin").authenticated()
+                        .requestMatchers("/api/products/**").authenticated()
+                        .requestMatchers("/api/users/**").hasRole("ADMIN")
                 )
                 .httpBasic(Customizer.withDefaults())
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt
                                 .decoder(jwtDecoder())
+                                .jwtAuthenticationConverter(jwtAuthenticationConverter())
                         )
                 );
 
@@ -84,7 +86,7 @@ public class WebSecurityConfig {
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userService);
+        authProvider.setUserDetailsService(customUserDetailService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
@@ -94,4 +96,17 @@ public class WebSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
+    public JwtAuthenticationConverter jwtAuthenticationConverter() {
+        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
+        converter.setJwtGrantedAuthoritiesConverter(jwt -> {
+            Collection<GrantedAuthority> authorities = new ArrayList<>();
+            List<String> roles = jwt.getClaimAsStringList("roles");
+            if (roles != null) {
+                roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role)));
+            }
+            return authorities;
+        });
+        return converter;
+    }
 }

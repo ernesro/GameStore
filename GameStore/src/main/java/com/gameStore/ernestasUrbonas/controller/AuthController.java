@@ -2,8 +2,8 @@ package com.gameStore.ernestasUrbonas.controller;
 
 import com.gameStore.ernestasUrbonas.dto.AuthRequest;
 import com.gameStore.ernestasUrbonas.dto.AuthResponse;
+import com.gameStore.ernestasUrbonas.service.CustomUserDetailService;
 import com.gameStore.ernestasUrbonas.service.JwtService;
-import com.gameStore.ernestasUrbonas.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,12 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
-    private final UserService userService;
+    private final CustomUserDetailService customUserDetailService;
     private final JwtService jwtService;
 
-    public AuthController(AuthenticationManager authenticationManager, UserService userService, JwtService jwtService) {
+    public AuthController(AuthenticationManager authenticationManager, CustomUserDetailService customUserDetailService, JwtService jwtService) {
         this.authenticationManager = authenticationManager;
-        this.userService = userService;
+        this.customUserDetailService = customUserDetailService;
         this.jwtService = jwtService;
     }
 
@@ -40,7 +40,7 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        final UserDetails userDetails = userService.loadUserByUsername(request.getUsername());
+        final UserDetails userDetails = customUserDetailService.loadUserByUsername(request.getUsername());
         final String jwtToken = jwtService.generateToken(userDetails);
 
         return ResponseEntity.ok(new AuthResponse(jwtToken));
