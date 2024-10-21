@@ -27,5 +27,6 @@ public class UserDTO {
         @Size(min = 2, message = "Name must have at least 2 characters")
         private String email;
 
+        @NotNull(message = "Name cannot be null")
         private Set<String> roles;
 }

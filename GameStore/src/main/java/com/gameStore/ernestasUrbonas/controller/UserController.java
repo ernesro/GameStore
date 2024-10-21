@@ -40,7 +40,7 @@ public class UserController {
     )
     @PostMapping
     public ResponseEntity<UserDTO> createProduct(@Valid @RequestBody UserDTO userDTO) {
-        UserDTO createdProduct = userService.createUser(userDTO);
-        return ResponseEntity.ok(createdProduct);
+        UserDTO createdUser = userService.createUser(userDTO);
+        return ResponseEntity.ok(createdUser);
     }
 }

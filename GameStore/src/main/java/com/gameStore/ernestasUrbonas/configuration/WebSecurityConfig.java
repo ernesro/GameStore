@@ -59,14 +59,14 @@ public class WebSecurityConfig {
                 )
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers(AUTH_WHITE_LIST).permitAll()
-                        .requestMatchers("/api/products/**").authenticated()
-                        .requestMatchers("/api/users/**").hasRole("ADMIN")
+                        .requestMatchers("/api/**").authenticated()
+                        //.requestMatchers("/api/users/**").hasRole("ADMIN") // TODO: Add roles
                 )
                 .httpBasic(Customizer.withDefaults())
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt
                                 .decoder(jwtDecoder())
-                                .jwtAuthenticationConverter(jwtAuthenticationConverter())
+                                //.jwtAuthenticationConverter(jwtAuthenticationConverter())  // TODO: Add roles
                         )
                 );
 
@@ -96,17 +96,18 @@ public class WebSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public JwtAuthenticationConverter jwtAuthenticationConverter() {
-        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
-        converter.setJwtGrantedAuthoritiesConverter(jwt -> {
-            Collection<GrantedAuthority> authorities = new ArrayList<>();
-            List<String> roles = jwt.getClaimAsStringList("roles");
-            if (roles != null) {
-                roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role)));
-            }
-            return authorities;
-        });
-        return converter;
-    }
+    // TODO: Add roles
+//    @Bean
+//    public JwtAuthenticationConverter jwtAuthenticationConverter() {
+//        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
+//        converter.setJwtGrantedAuthoritiesConverter(jwt -> {
+//            Collection<GrantedAuthority> authorities = new ArrayList<>();
+//            List<String> roles = jwt.getClaimAsStringList("roles");
+//            if (roles != null) {
+//                roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role)));
+//            }
+//            return authorities;
+//        });
+//        return converter;
+//    }
 }

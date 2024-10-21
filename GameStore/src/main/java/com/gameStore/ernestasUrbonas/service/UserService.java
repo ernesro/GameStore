@@ -30,6 +30,7 @@ public class UserService {
 
     private UserEntity mapDTOToEntity(UserDTO userDTO) {
         UserEntity userEntity = new UserEntity();
+        userEntity.setId(userDTO.getId());
         userEntity.setUsername(userDTO.getUsername());
         userEntity.setPassword(this.encryptPassword(userDTO.getPassword()));
         userEntity.setEmail(userDTO.getEmail());
@@ -43,6 +44,7 @@ public class UserService {
 
     private UserDTO mapEntityToDTO(UserEntity userEntity) {
         UserDTO userDTO = new UserDTO();
+        userDTO.setId(userEntity.getId());
         userDTO.setUsername(userEntity.getUsername());
         userDTO.setEmail(userEntity.getEmail());
         userDTO.setRoles(userEntity.getRoleEntities()
