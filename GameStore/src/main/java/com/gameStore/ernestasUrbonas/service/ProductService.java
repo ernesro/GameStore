@@ -1,9 +1,10 @@
 package com.gameStore.ernestasUrbonas.service;
 
 import com.gameStore.ernestasUrbonas.dto.ProductDTO;
-import com.gameStore.ernestasUrbonas.exception.EntityNotFoundException;
+import com.gameStore.ernestasUrbonas.mapper.ProductMapper;
 import com.gameStore.ernestasUrbonas.model.Product;
 import com.gameStore.ernestasUrbonas.repository.ProductRepository;
+import org.apache.kafka.common.errors.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +19,12 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
+    private ProductMapper productMapper;
+
     @Autowired
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository, ProductMapper productMapper) {
         this.productRepository = productRepository;
+        this.productMapper = productMapper;
     }
 
     /**
@@ -30,9 +34,10 @@ public class ProductService {
      * @return The created ProductDTO.
      */
     public ProductDTO createProduct(ProductDTO productDTO){
-        Product product = this.mapDTOToEntity(productDTO);
+
+        Product product = this.productMapper.mapDTOToEntity(productDTO);
         Product savedProduct = this.productRepository.save(product);
-        return this.mapEntityToDTO(savedProduct);
+        return this.productMapper.mapEntityToDTO(savedProduct);
     }
 
     /**
@@ -43,7 +48,7 @@ public class ProductService {
     public List<ProductDTO> findAllProducts(){
         List<Product> products = this.productRepository.findAll();
         return products.stream()
-                .map(this::mapEntityToDTO)
+                .map(this.productMapper::mapEntityToDTO)
                 .collect(Collectors.toList());
     }
 
@@ -55,8 +60,8 @@ public class ProductService {
      */
     public ProductDTO findProductById(Long id) {
         Product product = this.productRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Product", id));
-        return this.mapEntityToDTO(product);
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with identifier: " + id));
+        return this.productMapper.mapEntityToDTO(product);
     }
 
     /**
@@ -67,7 +72,7 @@ public class ProductService {
      */
     public ProductDTO updateProduct(ProductDTO updatedProductDTO){
         Product existingProduct = this.productRepository.findById(updatedProductDTO.getId())
-                .orElseThrow(() -> new EntityNotFoundException("Product", updatedProductDTO.getId()));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with identifier: " + updatedProductDTO.getId()));
 
         existingProduct.setName(updatedProductDTO.getName());
         existingProduct.setDescription(updatedProductDTO.getDescription());
@@ -80,7 +85,7 @@ public class ProductService {
         existingProduct.setStock(updatedProductDTO.getStock());
 
         Product updatedProduct = productRepository.save(existingProduct);
-        return mapEntityToDTO(updatedProduct);
+        return this.productMapper.mapEntityToDTO(updatedProduct);
     }
 
     /**
@@ -90,36 +95,7 @@ public class ProductService {
      */
     public void deleteProduct(Long id) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Product", id));
+                .orElseThrow(() ->  new ResourceNotFoundException("Product not found with identifier: " + id));
         productRepository.delete(product);
-    }
-
-    private Product mapDTOToEntity(ProductDTO productDTO) {
-        Product product = new Product();
-        product.setName(productDTO.getName());
-        product.setDescription(productDTO.getDescription());
-        product.setPrice(productDTO.getPrice());
-        product.setCategory(productDTO.getCategory());
-        product.setCondition(productDTO.getCondition());
-        product.setTags(productDTO.getTags());
-        product.setAverageRating(productDTO.getAverageRating());
-        product.setImageUrl(productDTO.getImageUrl());
-        product.setStock(productDTO.getStock());
-        return product;
-    }
-
-    private ProductDTO mapEntityToDTO(Product product) {
-            return new ProductDTO(
-                    product.getId(),
-                    product.getName(),
-                    product.getDescription(),
-                    product.getCondition(),
-                    product.getCategory(),
-                    product.getTags(),
-                    product.getPrice(),
-                    product.getStock(),
-                    product.getImageUrl(),
-                    product.getAverageRating()
-            );
     }
 }

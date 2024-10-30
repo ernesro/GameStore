@@ -14,19 +14,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
 import javax.crypto.spec.SecretKeySpec;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -62,7 +56,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/**").authenticated()
                         //.requestMatchers("/api/users/**").hasRole("ADMIN") // TODO: Add roles
                 )
-                .httpBasic(Customizer.withDefaults())
+                .httpBasic(Customizer.withDefaults()) // TODO: Review
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt
                                 .decoder(jwtDecoder())
