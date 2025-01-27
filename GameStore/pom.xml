@@ -158,7 +158,7 @@
 				<configuration>
 					<url>jdbc:postgresql://localhost:5432/GameStore</url>
 					<user>postgres</user>
-					<password>pgadmin</password>
+					<password>postgres</password>
 				</configuration>
 			</plugin>
 

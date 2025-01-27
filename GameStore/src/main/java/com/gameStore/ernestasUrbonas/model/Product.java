@@ -32,7 +32,7 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private Category category;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     private List<Tag> tags;
 
