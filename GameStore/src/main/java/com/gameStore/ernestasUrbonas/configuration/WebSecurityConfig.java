@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -19,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.crypto.spec.SecretKeySpec;
 
@@ -53,14 +55,11 @@ public class WebSecurityConfig {
                 )
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers(AUTH_WHITE_LIST).permitAll()
-                        .requestMatchers("/api/**").authenticated()
-                        //.requestMatchers("/api/users/**").hasRole("ADMIN") // TODO: Add roles
+                        .requestMatchers("/api/products/**").authenticated()
                 )
-                .httpBasic(Customizer.withDefaults()) // TODO: Review
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt
                                 .decoder(jwtDecoder())
-                                //.jwtAuthenticationConverter(jwtAuthenticationConverter())  // TODO: Add roles
                         )
                 );
 
@@ -72,36 +71,32 @@ public class WebSecurityConfig {
         return NimbusJwtDecoder.withSecretKey(new SecretKeySpec(secretKey.getBytes(), SignatureAlgorithm.HS256.getJcaName())).build();
     }
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
-        return authConfig.getAuthenticationManager();
-    }
+//    @Bean
+//    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+//        return authConfig.getAuthenticationManager();
+//    }
 
     @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(customUserDetailService);
-        authProvider.setPasswordEncoder(passwordEncoder());
-        return authProvider;
+    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+        AuthenticationManagerBuilder authenticationManagerBuilder =
+                http.getSharedObject(AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder
+                .userDetailsService(customUserDetailService)
+                .passwordEncoder(passwordEncoder());
+        return authenticationManagerBuilder.build();
     }
+
+//    @Bean
+//    public DaoAuthenticationProvider authenticationProvider() {
+//        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+//        authProvider.setUserDetailsService(customUserDetailService);
+//        authProvider.setPasswordEncoder(passwordEncoder());
+//        return authProvider;
+//    }
 
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
 
-    // TODO: Add roles
-//    @Bean
-//    public JwtAuthenticationConverter jwtAuthenticationConverter() {
-//        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
-//        converter.setJwtGrantedAuthoritiesConverter(jwt -> {
-//            Collection<GrantedAuthority> authorities = new ArrayList<>();
-//            List<String> roles = jwt.getClaimAsStringList("roles");
-//            if (roles != null) {
-//                roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role)));
-//            }
-//            return authorities;
-//        });
-//        return converter;
-//    }
 }
