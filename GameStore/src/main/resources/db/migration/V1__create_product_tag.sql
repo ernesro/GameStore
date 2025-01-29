@@ -39,7 +39,7 @@ INSERT INTO public.product (id, average_rating, category, condition, description
 
 CREATE TABLE IF NOT EXISTS public.product_tags
 (
-    product_id BIGINT NOT NULL PRIMARY KEY,
+    product_id BIGINT NOT NULL,
     tags tag_enum NOT NULL,
 
     CONSTRAINT fk_product FOREIGN KEY (product_id)
