@@ -156,9 +156,10 @@
 				<artifactId>flyway-maven-plugin</artifactId>
 				<version>10.10.0</version>
 				<configuration>
+					<cleanDisabled>false</cleanDisabled>
 					<url>jdbc:postgresql://localhost:5432/GameStore</url>
-					<user>postgres</user>
-					<password>postgres</password>
+					<user>${env.DB_USER}</user>
+					<password>${env.DB_PASS}</password>
 				</configuration>
 			</plugin>
 
