@@ -4,8 +4,10 @@ CREATE TABLE IF NOT EXISTS public.role
     name character varying(255) NOT NULL
 );
 
+/*
 INSERT INTO public.role (id, name) VALUES (1, 'ADMIN');
 INSERT INTO public.role (id, name) VALUES (2, 'USER');
+*/
 
 CREATE TABLE IF NOT EXISTS public.users
 (
@@ -15,11 +17,12 @@ CREATE TABLE IF NOT EXISTS public.users
     username character varying(255) NOT NULL
 );
 
+/*
 INSERT INTO public.users (id, email, password, username) VALUES (3, 'admin@gmail.com', '$2a$10$jrrLEAAG61TVzjdWaLxNiekKlDZLipyfoNvG7x.BtGJ1FAWwIz/8y', 'admin');
 INSERT INTO public.users (id, email, password, username) VALUES (4, 'string', '$2a$10$S6tVQPpEsBFzRps5/ufCgu2Uh23oqBLoZPi1b9h/BYWB/VJPMPBuO', 'string');
 INSERT INTO public.users (id, email, password, username) VALUES (5, 'string', '$2a$10$kelAxTy6O3Cyx6zQUZj0Su/S1bXCBZeI29BWhShfAjx5rZk/XLXYm', 'string');
 INSERT INTO public.users (id, email, password, username) VALUES (6, 'string', '$2a$10$foAzj21a7Q..o2IdM0Bi3OIMg80Xk4cw6DEy0TrlqeHuQt9x6ZM9S', 'string');
-
+*/
 CREATE TABLE IF NOT EXISTS public.user_roles
 (
     user_id BIGINT NOT NULL,
@@ -36,7 +39,9 @@ CREATE TABLE IF NOT EXISTS public.user_roles
     ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+/*
 INSERT INTO public.user_roles (user_id, role_id) VALUES (3, 1);
 INSERT INTO public.user_roles (user_id, role_id) VALUES (4, 2);
 INSERT INTO public.user_roles (user_id, role_id) VALUES (5, 2);
 INSERT INTO public.user_roles (user_id, role_id) VALUES (6, 2);
+*/
