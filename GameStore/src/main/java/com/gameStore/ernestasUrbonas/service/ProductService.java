@@ -19,7 +19,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    private ProductMapper productMapper;
+    private final ProductMapper productMapper;
 
     @Autowired
     public ProductService(ProductRepository productRepository, ProductMapper productMapper) {

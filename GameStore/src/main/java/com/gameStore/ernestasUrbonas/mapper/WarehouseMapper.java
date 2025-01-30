@@ -2,7 +2,9 @@ package com.gameStore.ernestasUrbonas.mapper;
 
 import com.gameStore.ernestasUrbonas.dto.WarehouseDTO;
 import com.gameStore.ernestasUrbonas.model.Warehouse;
+import org.springframework.stereotype.Component;
 
+@Component
 public class WarehouseMapper {
     public Warehouse mapDTOToEntity(WarehouseDTO warehouseDTO) {
         Warehouse warehouse = new Warehouse();

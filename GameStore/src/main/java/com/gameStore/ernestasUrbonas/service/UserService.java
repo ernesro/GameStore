@@ -2,7 +2,6 @@ package com.gameStore.ernestasUrbonas.service;
 
 import com.gameStore.ernestasUrbonas.dto.UserDTO;
 import com.gameStore.ernestasUrbonas.mapper.UserMapper;
-import com.gameStore.ernestasUrbonas.model.Role;
 import com.gameStore.ernestasUrbonas.model.UserEntity;
 import com.gameStore.ernestasUrbonas.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
