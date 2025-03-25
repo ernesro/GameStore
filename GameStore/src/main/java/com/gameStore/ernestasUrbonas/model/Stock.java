@@ -26,5 +26,5 @@ public class Stock {
     private Warehouse warehouse;
 
     @Column(nullable = false)
-    private int quantity;
+    private Integer quantity;
 }

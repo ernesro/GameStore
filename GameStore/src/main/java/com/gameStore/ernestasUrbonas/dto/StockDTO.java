@@ -1,9 +1,7 @@
 package com.gameStore.ernestasUrbonas.dto;
 
-import com.gameStore.ernestasUrbonas.model.Product;
-import com.gameStore.ernestasUrbonas.model.Warehouse;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,12 +14,12 @@ public class StockDTO {
     private Long id;
 
     @NotNull(message = "Product ID cannot be null")
-    private Product product;
+    private Long idProduct;
 
     @NotNull(message = "Warehouse ID cannot be null")
-    private Warehouse warehouse;
+    private Long idWarehouse;
 
     @NotNull(message = "Stock cannot be null")
-    @Size(message = "Stock must have at least 0 quantity")
+    @Min(value = 0, message = "Stock must be greater than or equal to 0")
     private Integer quantity;
 }

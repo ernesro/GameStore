@@ -3,7 +3,6 @@ package com.gameStore.ernestasUrbonas.mapper;
 import com.gameStore.ernestasUrbonas.dto.UserDTO;
 import com.gameStore.ernestasUrbonas.model.Role;
 import com.gameStore.ernestasUrbonas.model.UserEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
