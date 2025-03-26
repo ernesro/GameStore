@@ -1,8 +1,8 @@
 package com.gameStore.ernestasUrbonas.dto;
 
-import com.gameStore.ernestasUrbonas.model.enums.Category;
-import com.gameStore.ernestasUrbonas.model.enums.Condition;
-import com.gameStore.ernestasUrbonas.model.enums.Tag;
+import com.gameStore.ernestasUrbonas.model.enums.ItemCategory;
+import com.gameStore.ernestasUrbonas.model.enums.ItemCondition;
+import com.gameStore.ernestasUrbonas.model.enums.ItemTag;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,13 +26,13 @@ public class ProductDTO {
     private String description;
 
     @NotNull(message = "Condition cannot be null")
-    private Condition condition;
+    private ItemCondition itemCondition;
 
     @NotNull(message = "Category cannot be null")
-    private Category category;
+    private ItemCategory itemCategory;
 
     @NotEmpty(message = "Tags cannot be empty")
-    private List<Tag> tags;
+    private List<ItemTag> itemTags;
 
     @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than 0")
     @DecimalMax(value = "10000.0", message = "Price must be less than 10,000")

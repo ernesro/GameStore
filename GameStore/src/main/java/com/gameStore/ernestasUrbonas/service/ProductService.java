@@ -77,9 +77,9 @@ public class ProductService {
         existingProduct.setName(updatedProductDTO.getName());
         existingProduct.setDescription(updatedProductDTO.getDescription());
         existingProduct.setPrice(updatedProductDTO.getPrice());
-        existingProduct.setCategory(updatedProductDTO.getCategory());
-        existingProduct.setCondition(updatedProductDTO.getCondition());
-        existingProduct.setTags(updatedProductDTO.getTags());
+        existingProduct.setItemCategory(updatedProductDTO.getItemCategory());
+        existingProduct.setItemCondition(updatedProductDTO.getItemCondition());
+        existingProduct.setItemTags(updatedProductDTO.getItemTags());
         existingProduct.setAverageRating(updatedProductDTO.getAverageRating());
         existingProduct.setImageUrl(updatedProductDTO.getImageUrl());
         existingProduct.setStock(updatedProductDTO.getStock());

@@ -12,9 +12,9 @@ public class ProductMapper {
         product.setName(productDTO.getName());
         product.setDescription(productDTO.getDescription());
         product.setPrice(productDTO.getPrice());
-        product.setCategory(productDTO.getCategory());
-        product.setCondition(productDTO.getCondition());
-        product.setTags(productDTO.getTags());
+        product.setItemCategory(productDTO.getItemCategory());
+        product.setItemCondition(productDTO.getItemCondition());
+        product.setItemTags(productDTO.getItemTags());
         product.setAverageRating(productDTO.getAverageRating());
         product.setImageUrl(productDTO.getImageUrl());
         product.setStock(productDTO.getStock());
@@ -26,9 +26,9 @@ public class ProductMapper {
                 product.getId(),
                 product.getName(),
                 product.getDescription(),
-                product.getCondition(),
-                product.getCategory(),
-                product.getTags(),
+                product.getItemCondition(),
+                product.getItemCategory(),
+                product.getItemTags(),
                 product.getPrice(),
                 product.getStock(),
                 product.getImageUrl(),

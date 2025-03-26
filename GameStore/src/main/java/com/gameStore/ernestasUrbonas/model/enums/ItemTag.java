@@ -1,6 +1,6 @@
 package com.gameStore.ernestasUrbonas.model.enums;
 
-public enum Tag {
+public enum ItemTag {
     PS1,
     PS2,
     PS3,

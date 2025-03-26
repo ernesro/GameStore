@@ -1,8 +1,8 @@
 package com.gameStore.ernestasUrbonas.model;
 
-import com.gameStore.ernestasUrbonas.model.enums.Category;
-import com.gameStore.ernestasUrbonas.model.enums.Condition;
-import com.gameStore.ernestasUrbonas.model.enums.Tag;
+import com.gameStore.ernestasUrbonas.model.enums.ItemCategory;
+import com.gameStore.ernestasUrbonas.model.enums.ItemCondition;
+import com.gameStore.ernestasUrbonas.model.enums.ItemTag;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,15 +27,18 @@ public class Product {
     private String name;
     private String description;
 
+    @Column(name = "itemcondition")
     @Enumerated(EnumType.STRING)
-    private Condition condition;
+    private ItemCondition itemCondition;
 
+    @Column(name = "itemcategory")
     @Enumerated(EnumType.STRING)
-    private Category category;
+    private ItemCategory itemCategory;
 
+    @Column(name = "itemtags")
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
-    private List<Tag> tags = new ArrayList<>();
+    private List<ItemTag> itemTags = new ArrayList<>();
 
     private double price;
 
