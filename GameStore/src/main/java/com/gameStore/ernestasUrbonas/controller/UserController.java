@@ -38,6 +38,7 @@ public class UserController {
             )
         }
     )
+
     @PostMapping
     public ResponseEntity<UserDTO> createProduct(@Valid @RequestBody UserDTO userDTO) {
         UserDTO createdUser = userService.createUser(userDTO);
