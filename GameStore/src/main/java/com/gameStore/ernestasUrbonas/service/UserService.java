@@ -24,6 +24,12 @@ public class UserService {
         this.userMapper = userMapper;
     }
 
+    /**
+     * Create a new user.
+     *
+     * @param userDTO Data Transfer Object containing user details.
+     * @return The created UserDTO.
+     */
     public UserDTO createUser(UserDTO userDTO) {
 
         userDTO.setPassword(this.encryptPassword(userDTO.getPassword()));
@@ -40,6 +46,11 @@ public class UserService {
         return this.userMapper.mapEntityToDTO(savedUserEntity);
     }
 
+    /**
+     * Encrypt the user's password using BCrypt.
+     * @param password
+     * @return
+     */
     private String encryptPassword (String password) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         return encoder.encode(password);

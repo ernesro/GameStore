@@ -1,7 +1,8 @@
 package com.gameStore.ernestasUrbonas.dto;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ public class WarehouseDTO {
         private String location;
 
         @NotNull(message = "Capacity cannot be null")
-        @Size(min = 10, message = "Capacity must be at least 0")
-        private Integer capacity;
+        @Min(100)
+        @Max(10000)
+        private Long capacity;
 }

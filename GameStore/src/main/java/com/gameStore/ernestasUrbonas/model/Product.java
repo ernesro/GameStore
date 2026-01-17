@@ -42,9 +42,6 @@ public class Product {
 
     private double price;
 
-    @Column(nullable = false)
-    private int stock;
-
     private String imageUrl;
 
     @Column(nullable = false)

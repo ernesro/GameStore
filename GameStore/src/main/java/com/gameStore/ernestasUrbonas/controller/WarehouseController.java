@@ -1,8 +1,8 @@
 package com.gameStore.ernestasUrbonas.controller;
 
-import com.gameStore.ernestasUrbonas.dto.ProductDTO;
+import com.gameStore.ernestasUrbonas.dto.WarehouseDTO;
 import com.gameStore.ernestasUrbonas.model.ErrorDetail;
-import com.gameStore.ernestasUrbonas.service.ProductService;
+import com.gameStore.ernestasUrbonas.service.WarehouseService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -16,45 +16,44 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/products")
-public class ProductController {
+@RequestMapping("/api/warehouses")
+public class WarehouseController {
+   private final WarehouseService warehouseService;
 
-    private final ProductService productService;
-
-    @Autowired
-    public ProductController(ProductService productService){
-        this.productService = productService;
-    }
+   @Autowired
+   public WarehouseController(WarehouseService warehouseService) {
+       this.warehouseService = warehouseService;
+   }
 
 
 
     /**
-     * Create a new product.
+     * Create a new warehouse.
      *
-     * @param productDTO Data Transfer Object containing product details for creation.
-     * @return The created ProductDTO.
+     * @param warehouseDTO Data Transfer Object containing warehouse details for creation.
+     * @return The created WarehouseDTO.
      */
     @Operation(
-            summary = "Create a new product",
-            description = "Creates a new product with the provided details.",
-            operationId = "createProduct",
-            tags = { "products" },
+            summary = "Create a new warehouse",
+            description = "Creates a new warehouse with the provided details.",
+            operationId = "createWarehouse",
+            tags = { "warehouses" },
             responses = {
                     @ApiResponse(
-                            responseCode = "200",
-                            description = "Product created successfully",
+                            responseCode = "201",
+                            description = "Warehouse created successfully",
                             content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = ProductDTO.class))
+                                    schema = @Schema(implementation = WarehouseDTO.class))
                     ),
                     @ApiResponse(
                             responseCode = "400",
-                            description = "Invalid product data provided",
+                            description = "Invalid warehouse data provided",
                             content = @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = ErrorDetail.class))
                     ),
                     @ApiResponse(
                             responseCode = "409",
-                            description = "Product already exists",
+                            description = "Warehouse already exists",
                             content = @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = ErrorDetail.class))
                     ),
@@ -67,29 +66,29 @@ public class ProductController {
             }
     )
     @PostMapping
-    public ResponseEntity<ProductDTO> createProduct(@Valid @RequestBody ProductDTO productDTO) {
-        ProductDTO createdProduct = productService.createProduct(productDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
+    public ResponseEntity<WarehouseDTO> creteWarehouse (@Valid @RequestBody WarehouseDTO warehouseDTO) {
+        WarehouseDTO created = warehouseService.createWarehouse(warehouseDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
 
 
     /**
-     * Find all products.
+     * Get all warehouses.
      *
-     * @return The list of all Products like ProductDTO.
+     * @return List of WarehouseDTO.
      */
     @Operation(
-            summary = "Get all products",
-            description = "Returns a list of all product",
-            operationId = "findAllProducts",
-            tags = { "products" },
+            summary = "Get all warehouses",
+            description = "Returns a list of all warehouses.",
+            operationId = "getAllWarehouses",
+            tags = { "warehouses" },
             responses = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Products retrieved successfully",
+                            description = "List of warehouses found",
                             content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = ProductDTO.class))
+                                    schema = @Schema(implementation = WarehouseDTO.class))
                     ),
                     @ApiResponse(
                             responseCode = "500",
@@ -100,33 +99,32 @@ public class ProductController {
             }
     )
     @GetMapping
-    public ResponseEntity<List<ProductDTO>> findAllProducts() {
-        return ResponseEntity.ok(productService.findAllProducts());
+    public ResponseEntity<List<WarehouseDTO>> getWarehouseById() {
+        return ResponseEntity.ok(warehouseService.getAllWarehouses());
     }
 
 
-
     /**
-     * Find product by ID.
+     * Find warehouse by ID.
      *
-     * @param id Product ID.
-     * @return ProductDTO.
+     * @param id Warehouse ID.
+     * @return WarehouseDTO.
      */
     @Operation(
-            summary = "Find product by ID",
-            description = "Returns a product by ID.",
-            operationId = "findProductById",
-            tags = { "products" },
+            summary = "Find warehouse by ID",
+            description = "Returns a warehouse by ID.",
+            operationId = "findWarehouseById",
+            tags = { "warehouses" },
             responses = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Product found",
+                            description = "Warehouse found",
                             content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = ProductDTO.class))
+                                    schema = @Schema(implementation = WarehouseDTO.class))
                     ),
                     @ApiResponse(
                             responseCode = "404",
-                            description = "Product not found",
+                            description = "Warehouse not found",
                             content = @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = ErrorDetail.class))
                     ),
@@ -139,39 +137,41 @@ public class ProductController {
             }
     )
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDTO> findProductById(@PathVariable Long id) {
-        return ResponseEntity.ok(productService.findProductById(id));
+    public ResponseEntity<WarehouseDTO> findWarehouseById(@PathVariable Long id) {
+        WarehouseDTO warehouseDTO = warehouseService.findWarehouseById(id);
+        return ResponseEntity.ok(warehouseDTO);
     }
 
 
 
     /**
-     * Update a product.
+     * Update a warehouse.
      *
-     * @param updatedProductDTO Data Transfer Object containing updated product details.
-     * @return The updated ProductDTO.
+     * @param id           Warehouse ID.
+     * @param warehouseDTO Data Transfer Object containing updated warehouse details.
+     * @return The updated WarehouseDTO.
      */
     @Operation(
-            summary = "Update a product",
-            description = "Updates an existing product with the provided details.",
-            operationId = "updateProduct",
-            tags = { "products" },
+            summary = "Update a warehouse",
+            description = "Updates a warehouse with the provided details.",
+            operationId = "updateWarehouse",
+            tags = { "warehouses" },
             responses = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Product updated successfully",
+                            description = "Warehouse updated successfully",
                             content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = ProductDTO.class))
+                                    schema = @Schema(implementation = WarehouseDTO.class))
                     ),
                     @ApiResponse(
                             responseCode = "400",
-                            description = "Invalid product data provided",
+                            description = "Invalid warehouse data provided",
                             content = @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = ErrorDetail.class))
                     ),
                     @ApiResponse(
                             responseCode = "404",
-                            description = "Product not found",
+                            description = "Warehouse not found",
                             content = @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = ErrorDetail.class))
                     ),
@@ -183,33 +183,33 @@ public class ProductController {
                     )
             }
     )
-    @PutMapping
-    public ResponseEntity<ProductDTO> updateProduct(@Valid @RequestBody ProductDTO updatedProductDTO) {
-        ProductDTO updatedProduct = productService.updateProduct(updatedProductDTO);
-        return ResponseEntity.ok(updatedProduct);
+    @PutMapping("/{id}")
+    public ResponseEntity<WarehouseDTO> updateWarehouse(@PathVariable Long id, @Valid @RequestBody WarehouseDTO warehouseDTO) {
+        warehouseDTO.setId(id);
+        WarehouseDTO updatedWarehouse = warehouseService.updateWarehouse(id, warehouseDTO);
+        return ResponseEntity.ok(updatedWarehouse);
     }
 
 
 
     /**
-     * Delete a product.
+     * Delete a warehouse by ID.
      *
-     * @param id Product ID.
-     * @return ResponseEntity.
+     * @param id Warehouse ID.
      */
     @Operation(
-            summary = "Delete a product",
-            description = "Deletes a product by ID.",
-            operationId = "deleteProduct",
-            tags = { "products" },
+            summary = "Delete a warehouse by ID",
+            description = "Deletes a warehouse by its ID.",
+            operationId = "deleteWarehouseById",
+            tags = { "warehouses" },
             responses = {
                     @ApiResponse(
-                            responseCode = "200",
-                            description = "Product deleted successfully"
+                            responseCode = "204",
+                            description = "Warehouse deleted successfully"
                     ),
                     @ApiResponse(
                             responseCode = "404",
-                            description = "Product not found",
+                            description = "Warehouse not found",
                             content = @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = ErrorDetail.class))
                     ),
@@ -222,8 +222,8 @@ public class ProductController {
             }
     )
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
-        productService.deleteProduct(id);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Void> deleteWarehouseById(@PathVariable Long id) {
+        warehouseService.deleteWarehouseById(id);
+        return ResponseEntity.noContent().build();
     }
 }

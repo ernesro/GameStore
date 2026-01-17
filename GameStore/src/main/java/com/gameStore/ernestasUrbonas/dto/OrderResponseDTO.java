@@ -14,6 +14,7 @@ import java.util.List;
 public class OrderResponseDTO {
 
     private Long id;
+    private Long userId;
     private double price;
     private OrderStatus status;
     private LocalDateTime createdAt;

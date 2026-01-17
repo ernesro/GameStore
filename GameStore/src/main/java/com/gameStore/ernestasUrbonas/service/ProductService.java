@@ -1,10 +1,10 @@
 package com.gameStore.ernestasUrbonas.service;
 
 import com.gameStore.ernestasUrbonas.dto.ProductDTO;
+import com.gameStore.ernestasUrbonas.exception.NotFoundException;
 import com.gameStore.ernestasUrbonas.mapper.ProductMapper;
 import com.gameStore.ernestasUrbonas.model.Product;
 import com.gameStore.ernestasUrbonas.repository.ProductRepository;
-import org.apache.kafka.common.errors.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -60,7 +60,7 @@ public class ProductService {
      */
     public ProductDTO findProductById(Long id) {
         Product product = this.productRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Product not found with identifier: " + id));
+                .orElseThrow(() -> new NotFoundException("Product not found with identifier: " + id));
         return this.productMapper.mapEntityToDTO(product);
     }
 
@@ -72,7 +72,7 @@ public class ProductService {
      */
     public ProductDTO updateProduct(ProductDTO updatedProductDTO){
         Product existingProduct = this.productRepository.findById(updatedProductDTO.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Product not found with identifier: " + updatedProductDTO.getId()));
+                .orElseThrow(() -> new NotFoundException("Product not found with identifier: " + updatedProductDTO.getId()));
 
         existingProduct.setName(updatedProductDTO.getName());
         existingProduct.setDescription(updatedProductDTO.getDescription());
@@ -82,7 +82,6 @@ public class ProductService {
         existingProduct.setItemTags(updatedProductDTO.getItemTags());
         existingProduct.setAverageRating(updatedProductDTO.getAverageRating());
         existingProduct.setImageUrl(updatedProductDTO.getImageUrl());
-        existingProduct.setStock(updatedProductDTO.getStock());
 
         Product updatedProduct = productRepository.save(existingProduct);
         return this.productMapper.mapEntityToDTO(updatedProduct);
@@ -95,7 +94,7 @@ public class ProductService {
      */
     public void deleteProduct(Long id) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() ->  new ResourceNotFoundException("Product not found with identifier: " + id));
+                .orElseThrow(() ->  new NotFoundException("Product not found with identifier: " + id));
         productRepository.delete(product);
     }
 }

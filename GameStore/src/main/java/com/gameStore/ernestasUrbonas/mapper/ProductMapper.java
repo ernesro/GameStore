@@ -17,7 +17,6 @@ public class ProductMapper {
         product.setItemTags(productDTO.getItemTags());
         product.setAverageRating(productDTO.getAverageRating());
         product.setImageUrl(productDTO.getImageUrl());
-        product.setStock(productDTO.getStock());
         return product;
     }
 
@@ -30,7 +29,6 @@ public class ProductMapper {
                 product.getItemCategory(),
                 product.getItemTags(),
                 product.getPrice(),
-                product.getStock(),
                 product.getImageUrl(),
                 product.getAverageRating()
         );

@@ -38,9 +38,6 @@ public class ProductDTO {
     @DecimalMax(value = "10000.0", message = "Price must be less than 10,000")
     private double price;
 
-    @DecimalMin(value = "0", message = "Stock cannot be negative")
-    private int stock;
-
     @NotNull(message = "Image URL cannot be null")
     @Size(min = 3, message = "Image URL must have at least 3 characters")
     private String imageUrl;

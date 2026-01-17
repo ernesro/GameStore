@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,17 +32,26 @@ public class UserController {
      * @param userDTO Data Transfer Object containing user details for creation.
      * @return The created userDTO.
      */
-    @Operation(summary = "Create a new user", description = "Creates a new user with the provided details.",
-        operationId = "createUser", tags = { "users" }, responses = {
-            @ApiResponse(responseCode = "200", description = "User created successfully", content = @Content(
-                    mediaType = "application/json", schema = @Schema(implementation = UserDTO.class))
-            )
-        }
+    @Operation(
+            summary = "Create a new user",
+            description = "Creates a new user with the provided details.",
+            operationId = "createUser",
+            tags = { "users" },
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "User created successfully",
+                            content = @Content(
+                                            mediaType = "application/json",
+                                            schema = @Schema(implementation = UserDTO.class)
+                            )
+                    )
+            }
     )
 
     @PostMapping
     public ResponseEntity<UserDTO> createProduct(@Valid @RequestBody UserDTO userDTO) {
         UserDTO createdUser = userService.createUser(userDTO);
-        return ResponseEntity.ok(createdUser);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 }
