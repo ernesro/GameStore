@@ -58,6 +58,7 @@ public class OrderService {
             OrderItem item = order.getItems().get(i);
             item.setProduct(product);
             item.setOrder(order);
+            item.setPrice(product.getPrice());
 
             total += product.getPrice() * item.getQuantity();
         }
@@ -67,10 +68,11 @@ public class OrderService {
     }
 
     /**
-     * Find all orders.
+     * Find all user orders.
      *
-     * @return The list of all Orders like OrderResponseDTO.
+     * @return The list of all Orders as OrderResponseDTO.
      */
+    @Transactional
     public List<OrderResponseDTO> getAllOrdersByUser(Long userId) {
         List<Order> orders = this.orderRepository.findAllByUserId(userId);
         return orders.stream()

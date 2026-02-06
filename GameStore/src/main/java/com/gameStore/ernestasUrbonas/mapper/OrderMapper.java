@@ -42,9 +42,10 @@ public class OrderMapper {
 
         dto.setItems(order.getItems().stream().map(item -> {
             OrderItemDTO itemDTO = new OrderItemDTO();
+            itemDTO.setId(item.getId());
             itemDTO.setProductId(item.getProduct().getId());
             itemDTO.setQuantity(item.getQuantity());
-            itemDTO.setPrice(item.getPrice());
+            itemDTO.setPrice(item.getProduct().getPrice());
             return itemDTO;
         }).collect(Collectors.toList()));
 

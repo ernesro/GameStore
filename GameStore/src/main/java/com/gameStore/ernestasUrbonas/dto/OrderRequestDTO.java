@@ -14,5 +14,5 @@ public class OrderRequestDTO {
 
     @NotEmpty(message = "Order must contain at least one item")
     private Long userId;
-    private List<OrderItemDTO> items;
+    private List<OrderItemRequestDTO> items;
 }
