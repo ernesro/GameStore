@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class OrderItemDTO {
 
     @NotNull(message = "OrderItem ID cannot be null")
-    private Long Id;
+    private Long id;
 
     @NotNull(message = "Product ID cannot be null")
     private Long productId;

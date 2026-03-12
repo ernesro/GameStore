@@ -12,7 +12,8 @@ import java.util.List;
 @AllArgsConstructor
 public class OrderRequestDTO {
 
-    @NotEmpty(message = "Order must contain at least one item")
     private Long userId;
+
+    @NotEmpty(message = "Order must contain at least one item")
     private List<OrderItemRequestDTO> items;
 }
