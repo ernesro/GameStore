@@ -9,7 +9,6 @@ import com.gameStore.ernestasUrbonas.model.Warehouse;
 import com.gameStore.ernestasUrbonas.repository.ProductRepository;
 import com.gameStore.ernestasUrbonas.repository.StockRepository;
 import com.gameStore.ernestasUrbonas.repository.WarehouseRepository;
-import org.apache.kafka.common.errors.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,7 +48,7 @@ public class StockService {
      * @param warehouseId ID of the warehouse.
      * @param productId   ID of the product.
      * @return The found StockDTO.
-     * @throws ResourceNotFoundException if the stock item is not found.
+     * @throws NotFoundException if the stock item is not found.
      */
     public StockDTO findStockByWarehouseAndProduct(Long warehouseId, Long productId) {
 
@@ -69,7 +68,7 @@ public class StockService {
      * @param warehouseId ID of the warehouse.
      * @param quantity    New quantity to set.
      * @return The updated StockDTO.
-     * @throws ResourceNotFoundException if the stock item is not found.
+     * @throws NotFoundException if the stock item is not found.
      */
     public StockDTO updateStockQuantity(Long productId, Long warehouseId, Integer quantity) {
 
@@ -90,7 +89,7 @@ public class StockService {
      * @param productId   ID of the product.
      * @param warehouseId ID of the warehouse.
      * @return A ProductWarehousePair containing the Product and Warehouse.
-     * @throws ResourceNotFoundException if either the product or warehouse is not found.
+     * @throws NotFoundException if either the product or warehouse is not found.
      */
     private ProductWarehousePair getProductAndWarehouse (Long productId, Long warehouseId) {
         Product product = productRepository.findById(productId)

@@ -99,7 +99,7 @@ public class WarehouseController {
             }
     )
     @GetMapping
-    public ResponseEntity<List<WarehouseDTO>> getWarehouseById() {
+    public ResponseEntity<List<WarehouseDTO>> getAllWarehouses() {
         return ResponseEntity.ok(warehouseService.getAllWarehouses());
     }
 

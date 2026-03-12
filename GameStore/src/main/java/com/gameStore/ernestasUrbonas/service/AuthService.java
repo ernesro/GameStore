@@ -54,6 +54,10 @@ public class AuthService {
         u.setUsername(username);
         u.setPassword(passwordEncoder.encode(rawPassword));
         userRepository.save(u);
-        return login(new AuthRequest() {{ setUsername(username); setPassword(rawPassword);} });
+
+        AuthRequest loginRequest = new AuthRequest();
+        loginRequest.setUsername(username);
+        loginRequest.setPassword(rawPassword);
+        return login(loginRequest);
     }
 }

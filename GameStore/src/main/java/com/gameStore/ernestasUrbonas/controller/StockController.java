@@ -38,7 +38,7 @@ public class StockController {
             tags = { "stocks" },
             responses = {
                     @ApiResponse(
-                            responseCode = "200",
+                            responseCode = "201",
                             description = "Stock created successfully",
                             content = @Content(
                                             mediaType = "application/json",

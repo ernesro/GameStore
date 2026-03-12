@@ -41,7 +41,7 @@ public class ProductController {
             tags = { "products" },
             responses = {
                     @ApiResponse(
-                            responseCode = "200",
+                            responseCode = "201",
                             description = "Product created successfully",
                             content = @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = ProductDTO.class))
@@ -204,7 +204,7 @@ public class ProductController {
             tags = { "products" },
             responses = {
                     @ApiResponse(
-                            responseCode = "200",
+                            responseCode = "204",
                             description = "Product deleted successfully"
                     ),
                     @ApiResponse(
@@ -224,6 +224,6 @@ public class ProductController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }

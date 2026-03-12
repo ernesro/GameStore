@@ -39,7 +39,7 @@ public class UserController {
             tags = { "users" },
             responses = {
                     @ApiResponse(
-                            responseCode = "200",
+                            responseCode = "201",
                             description = "User created successfully",
                             content = @Content(
                                             mediaType = "application/json",
@@ -50,7 +50,7 @@ public class UserController {
     )
 
     @PostMapping
-    public ResponseEntity<UserDTO> createProduct(@Valid @RequestBody UserDTO userDTO) {
+    public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserDTO userDTO) {
         UserDTO createdUser = userService.createUser(userDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }

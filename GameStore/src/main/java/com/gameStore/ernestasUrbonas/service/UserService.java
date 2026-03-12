@@ -5,7 +5,7 @@ import com.gameStore.ernestasUrbonas.mapper.UserMapper;
 import com.gameStore.ernestasUrbonas.model.UserEntity;
 import com.gameStore.ernestasUrbonas.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.stream.Collectors;
@@ -15,13 +15,15 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final RoleService roleService;
+    private final PasswordEncoder passwordEncoder;
 
 
     @Autowired
-    public UserService(UserRepository userRepository, RoleService roleService, UserMapper userMapper) {
+    public UserService(UserRepository userRepository, RoleService roleService, UserMapper userMapper, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleService = roleService;
         this.userMapper = userMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     /**
@@ -52,7 +54,6 @@ public class UserService {
      * @return
      */
     private String encryptPassword (String password) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        return encoder.encode(password);
+        return passwordEncoder.encode(password);
     }
 }
