@@ -1,9 +1,7 @@
 package com.gameStore.ernestasUrbonas.service;
 
-import com.gameStore.ernestasUrbonas.dto.OrderItemDTO;
-import com.gameStore.ernestasUrbonas.dto.OrderItemRequestDTO;
-import com.gameStore.ernestasUrbonas.dto.OrderRequestDTO;
-import com.gameStore.ernestasUrbonas.dto.OrderResponseDTO;
+import com.gameStore.ernestasUrbonas.dto.*;
+import com.gameStore.ernestasUrbonas.exception.NegativeStockException;
 import com.gameStore.ernestasUrbonas.exception.NotFoundException;
 import com.gameStore.ernestasUrbonas.mapper.OrderMapper;
 import com.gameStore.ernestasUrbonas.model.Order;
@@ -48,6 +46,9 @@ class OrderServiceTest {
     @Mock
     private OrderMapper orderMapper;
 
+    @Mock
+    private StockService stockService;
+
     @InjectMocks
     private OrderService orderService;
 
@@ -83,6 +84,7 @@ class OrderServiceTest {
         requestDTO = new OrderRequestDTO();
         requestDTO.setUserId(1L);
         requestDTO.setItems(List.of(itemRequestDTO));
+        requestDTO.setWarehouseId(1L);
 
         responseDTO = new OrderResponseDTO();
         responseDTO.setId(1L);
@@ -99,9 +101,13 @@ class OrderServiceTest {
 
         //ARRANGE---------------------------------------------------------------------
 
+        StockDTO stockDTO = new StockDTO(1L, 1L, 1L, 99);
+
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(orderMapper.toEntity(requestDTO)).thenReturn(order);
         when(productRepository.findById(10L)).thenReturn(Optional.of(product));
+        when(stockService.findStockByWarehouseAndProduct(1L, 10L)).thenReturn(stockDTO);
+        when(stockService.updateStockQuantity(10L, 1L, 97)).thenReturn(stockDTO);
         when(orderRepository.save(any(Order.class))).thenReturn(order);
         when(orderMapper.toResponseDTO(order)).thenReturn(responseDTO);
 
@@ -174,6 +180,47 @@ class OrderServiceTest {
         assertThatThrownBy(() -> orderService.createOrder(requestDTO))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessageContaining("Product not found");
+
+        verify(orderRepository, never()).save(any());
+    }
+
+    @Test
+    void createOrder_shouldThrowNegativeStockException_WhenNewStockIsNegative() {
+
+        //ARRANGE---------------------------------------------------------------------
+
+        StockDTO stockDTO = new StockDTO(1L, 1L, 1L, 0);
+
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(orderMapper.toEntity(requestDTO)).thenReturn(order);
+        when(productRepository.findById(10L)).thenReturn(Optional.of(product));
+        when(stockService.findStockByWarehouseAndProduct(1L, 10L)).thenReturn(stockDTO);
+
+        //ACT AND ASSERT--------------------------------------------------------------
+
+        assertThatThrownBy(() -> orderService.createOrder(requestDTO))
+                .isInstanceOf(NegativeStockException.class)
+                .hasMessageContaining("Cannot create the order.");
+
+        verify(orderRepository, never()).save(any());
+    }
+
+    @Test
+    void createOrder_shouldThrowNotFoundException_whenWarehouseDoesNotExist() {
+
+        //ARRANGE---------------------------------------------------------------------
+
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(orderMapper.toEntity(requestDTO)).thenReturn(order);
+        when(productRepository.findById(10L)).thenReturn(Optional.of(product));
+        when(stockService.findStockByWarehouseAndProduct(1L, 10L))
+                .thenThrow(new NotFoundException("Warehouse not found"));
+
+        //ACT AND ASSERT--------------------------------------------------------------
+
+        assertThatThrownBy(() -> orderService.createOrder(requestDTO))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("Warehouse not found");
 
         verify(orderRepository, never()).save(any());
     }
