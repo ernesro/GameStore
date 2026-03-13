@@ -2,6 +2,8 @@ package com.gameStore.ernestasUrbonas.service;
 
 import com.gameStore.ernestasUrbonas.dto.OrderRequestDTO;
 import com.gameStore.ernestasUrbonas.dto.OrderResponseDTO;
+import com.gameStore.ernestasUrbonas.dto.StockDTO;
+import com.gameStore.ernestasUrbonas.exception.NegativeStockException;
 import com.gameStore.ernestasUrbonas.exception.NotFoundException;
 import com.gameStore.ernestasUrbonas.mapper.OrderMapper;
 import com.gameStore.ernestasUrbonas.model.Order;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
+    private final StockService stockService;
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
     private final UserRepository userRepository;
@@ -28,7 +31,8 @@ public class OrderService {
     private final OrderMapper orderMapper;
 
     @Autowired
-    public OrderService(OrderRepository orderRepository, OrderItemRepository orderItemRepository, UserRepository userRepository, ProductRepository productRepository, OrderMapper orderMapper) {
+    public OrderService(StockService stockService, OrderRepository orderRepository, OrderItemRepository orderItemRepository, UserRepository userRepository, ProductRepository productRepository, OrderMapper orderMapper) {
+        this.stockService = stockService;
         this.orderRepository = orderRepository;
         this.orderItemRepository = orderItemRepository;
         this.userRepository = userRepository;
@@ -56,6 +60,17 @@ public class OrderService {
                     .orElseThrow(() -> new NotFoundException("Product not found"));
 
             OrderItem item = order.getItems().get(i);
+
+            StockDTO itemStock = stockService.findStockByWarehouseAndProduct(dto.getWarehouseId(), product.getId());
+            int newStock = itemStock.getQuantity() - item.getQuantity();
+
+            if(newStock < 0)
+                throw new NegativeStockException
+                        ("Cannot create the order. Actual Stock for " + product.getName()
+                                + " is " + itemStock.getQuantity() + " and the order needs " + item.getQuantity());
+
+            stockService.updateStockQuantity(product.getId(), dto.getWarehouseId(), newStock);
+
             item.setProduct(product);
             item.setOrder(order);
             item.setPrice(product.getPrice());
