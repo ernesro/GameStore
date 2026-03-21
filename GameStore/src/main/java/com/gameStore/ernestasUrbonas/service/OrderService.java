@@ -2,7 +2,9 @@ package com.gameStore.ernestasUrbonas.service;
 
 import com.gameStore.ernestasUrbonas.dto.OrderRequestDTO;
 import com.gameStore.ernestasUrbonas.dto.OrderResponseDTO;
+import com.gameStore.ernestasUrbonas.dto.OrderUpdateDTO;
 import com.gameStore.ernestasUrbonas.dto.StockDTO;
+import com.gameStore.ernestasUrbonas.exception.ForbiddenException;
 import com.gameStore.ernestasUrbonas.exception.InvalidOrderStatusTransitionException;
 import com.gameStore.ernestasUrbonas.exception.NegativeStockException;
 import com.gameStore.ernestasUrbonas.exception.NotFoundException;
@@ -112,19 +114,23 @@ public class OrderService {
     /**
      * Update a order
      *
-     * @param updatedOrderDTO Data Transfer Object containing updated order details.
+     * @param orderUpdateDTO Data Transfer Object containing updated order details.
      * @return The updated OrderDTO.
      */
-    @Transactional
-    public OrderResponseDTO updateOrder(OrderResponseDTO updatedOrderDTO){
-        Order existingOrder = this.orderRepository.findById(updatedOrderDTO.getId())
-                .orElseThrow(() -> new NotFoundException("Order not found with identifier: " + updatedOrderDTO.getId()));
 
-        existingOrder.setPrice(updatedOrderDTO.getPrice());
-        existingOrder.setStatus(updatedOrderDTO.getStatus());
+    @Transactional
+    public OrderResponseDTO updateOrder(OrderUpdateDTO orderUpdateDTO){
+        Order existingOrder = this.orderRepository.findById(orderUpdateDTO.getId())
+                .orElseThrow(() -> new NotFoundException("Order not found with identifier: " + orderUpdateDTO.getId()));
+
+        if(!existingOrder.getStatus().equals(OrderStatus.PENDING)){
+            throw new ForbiddenException("Can not update an Order that is not PENDING state.");
+        }
+
+        existingOrder.setPrice(orderUpdateDTO.getPrice());
 
         existingOrder.setItems(
-                        updatedOrderDTO
+                        orderUpdateDTO
                                 .getItems()
                                 .stream()
                                 .map(orderItemDTO -> orderItemRepository.findById(orderItemDTO.getId())
@@ -136,6 +142,13 @@ public class OrderService {
         return this.orderMapper.toResponseDTO(updatedOrder);
     }
 
+    /**
+     * Update order status
+     *
+     * @param orderId Order ID
+     * @param newStatus New status for the Order
+     * @return The updated OrderDTO.
+     */
     @Transactional
     public OrderResponseDTO updateOrderStatus(Long orderId, OrderStatus newStatus){
         Order existingOrder = this.orderRepository.findById(orderId)
