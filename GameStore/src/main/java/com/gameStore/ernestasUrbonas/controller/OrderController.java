@@ -2,7 +2,9 @@ package com.gameStore.ernestasUrbonas.controller;
 
 import com.gameStore.ernestasUrbonas.dto.OrderRequestDTO;
 import com.gameStore.ernestasUrbonas.dto.OrderResponseDTO;
+import com.gameStore.ernestasUrbonas.dto.OrderUpdateDTO;
 import com.gameStore.ernestasUrbonas.model.ErrorDetail;
+import com.gameStore.ernestasUrbonas.model.enums.OrderStatus;
 import com.gameStore.ernestasUrbonas.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -105,4 +107,14 @@ public class OrderController {
     public ResponseEntity<List<OrderResponseDTO>> getAllUserOrders(@RequestParam Long userId) {
         return ResponseEntity.ok(orderService.getAllOrdersByUser(userId));
     }
+
+   @PutMapping
+   public ResponseEntity<OrderResponseDTO> updateOrder(@RequestBody OrderUpdateDTO orderUpdateDTO){
+        return ResponseEntity.ok(orderService.updateOrder(orderUpdateDTO));
+   }
+
+   @PutMapping("/update-status")
+    public ResponseEntity<OrderResponseDTO> updateOrderStatus(@RequestParam Long orderId, OrderStatus newOrderStatus){
+        return ResponseEntity.ok(orderService.updateOrderStatus(orderId, newOrderStatus));
+   }
 }
