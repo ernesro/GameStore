@@ -3,6 +3,7 @@ package com.gameStore.ernestasUrbonas.service;
 import com.gameStore.ernestasUrbonas.dto.OrderRequestDTO;
 import com.gameStore.ernestasUrbonas.dto.OrderResponseDTO;
 import com.gameStore.ernestasUrbonas.dto.StockDTO;
+import com.gameStore.ernestasUrbonas.exception.InvalidOrderStatusTransitionException;
 import com.gameStore.ernestasUrbonas.exception.NegativeStockException;
 import com.gameStore.ernestasUrbonas.exception.NotFoundException;
 import com.gameStore.ernestasUrbonas.mapper.OrderMapper;
@@ -10,6 +11,7 @@ import com.gameStore.ernestasUrbonas.model.Order;
 import com.gameStore.ernestasUrbonas.model.OrderItem;
 import com.gameStore.ernestasUrbonas.model.Product;
 import com.gameStore.ernestasUrbonas.model.UserEntity;
+import com.gameStore.ernestasUrbonas.model.enums.OrderStatus;
 import com.gameStore.ernestasUrbonas.repository.OrderItemRepository;
 import com.gameStore.ernestasUrbonas.repository.OrderRepository;
 import com.gameStore.ernestasUrbonas.repository.ProductRepository;
@@ -129,6 +131,22 @@ public class OrderService {
                                         .orElseThrow(() -> new NotFoundException("OrderItem not found with id: " + orderItemDTO.getId())))
                                 .collect(Collectors.toList())
         );
+
+        Order updatedOrder = orderRepository.save(existingOrder);
+        return this.orderMapper.toResponseDTO(updatedOrder);
+    }
+
+    @Transactional
+    public OrderResponseDTO updateOrderStatus(Long orderId, OrderStatus newStatus){
+        Order existingOrder = this.orderRepository.findById(orderId)
+                .orElseThrow(() -> new NotFoundException("Order not found with identifier: " + orderId));
+
+        if(existingOrder.getStatus().canTransitionTo(newStatus)){
+            existingOrder.setStatus(newStatus);
+        } else {
+            throw new InvalidOrderStatusTransitionException("Invalid advance from " + existingOrder.getStatus() +
+                    " to " + newStatus);
+        }
 
         Order updatedOrder = orderRepository.save(existingOrder);
         return this.orderMapper.toResponseDTO(updatedOrder);
