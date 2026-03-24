@@ -1,6 +1,8 @@
 package com.gameStore.ernestasUrbonas.service;
 
 import com.gameStore.ernestasUrbonas.dto.*;
+import com.gameStore.ernestasUrbonas.exception.ForbiddenException;
+import com.gameStore.ernestasUrbonas.exception.InvalidOrderStatusTransitionException;
 import com.gameStore.ernestasUrbonas.exception.NegativeStockException;
 import com.gameStore.ernestasUrbonas.exception.NotFoundException;
 import com.gameStore.ernestasUrbonas.mapper.OrderMapper;
@@ -130,9 +132,13 @@ class OrderServiceTest {
         //ARRANGE---------------------------------------------------------------------
 
         orderItem.setQuantity(3); // 3 units × 29.99 = 89.97
+        StockDTO stockDTO = new StockDTO(1L, 1L, 1L, 99);
+
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(orderMapper.toEntity(requestDTO)).thenReturn(order);
         when(productRepository.findById(10L)).thenReturn(Optional.of(product));
+        when(stockService.findStockByWarehouseAndProduct(1L, 10L)).thenReturn(stockDTO);
+        when(stockService.updateStockQuantity(10L, 1L, 96)).thenReturn(stockDTO);
         when(orderRepository.save(any(Order.class))).thenAnswer(invocation -> {
 
             Order savedOrder = invocation.getArgument(0);
@@ -317,10 +323,9 @@ class OrderServiceTest {
         itemDTO.setQuantity(2);
         itemDTO.setPrice(29.99);
 
-        OrderResponseDTO updateRequest = new OrderResponseDTO();
+        OrderUpdateDTO updateRequest = new OrderUpdateDTO();
         updateRequest.setId(1L);
         updateRequest.setPrice(99.99);
-        updateRequest.setStatus(OrderStatus.PENDING);
         updateRequest.setItems(List.of(itemDTO));
 
         when(orderRepository.findById(1L)).thenReturn(Optional.of(order));
@@ -344,7 +349,7 @@ class OrderServiceTest {
 
         //ARRANGE---------------------------------------------------------------------
 
-        OrderResponseDTO updateRequest = new OrderResponseDTO();
+        OrderUpdateDTO updateRequest = new OrderUpdateDTO();
         updateRequest.setId(99L);
         updateRequest.setItems(List.of());
         when(orderRepository.findById(99L)).thenReturn(Optional.empty());
@@ -364,7 +369,7 @@ class OrderServiceTest {
         OrderItemDTO itemDTO = new OrderItemDTO();
         itemDTO.setId(999L);
 
-        OrderResponseDTO updateRequest = new OrderResponseDTO();
+        OrderUpdateDTO updateRequest = new OrderUpdateDTO();
         updateRequest.setId(1L);
         updateRequest.setItems(List.of(itemDTO));
 
@@ -376,6 +381,83 @@ class OrderServiceTest {
         assertThatThrownBy(() -> orderService.updateOrder(updateRequest))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessageContaining("999");
+    }
+
+    @Test
+    void updateOrder_shouldThrowForbiddenException_whenOrderIsNotInPendingStatus() {
+
+        //ARRANGE---------------------------------------------------------------------
+
+        OrderUpdateDTO updateRequest = new OrderUpdateDTO();
+        updateRequest.setId(1L);
+        order.setStatus(OrderStatus.DELIVERED);
+        when(orderRepository.findById(1L)).thenReturn(Optional.of(order));
+
+        //ACT AND ASSERT--------------------------------------------------------------
+
+        assertThatThrownBy(() -> orderService.updateOrder(updateRequest))
+                .isInstanceOf(ForbiddenException.class);
+    }
+
+    // =========================================================================
+    // updateOrderStatus
+    // =========================================================================
+
+    @Test
+    void updateOrderStatus_shouldReturnUpdatedOrder_whenOrderExists() {
+
+        //ARRANGE---------------------------------------------------------------------
+        order.setStatus(OrderStatus.SHIPPED);
+        responseDTO.setStatus(OrderStatus.DELIVERED);
+        OrderStatus newStatus = OrderStatus.DELIVERED;
+
+        when(orderRepository.findById(1L)).thenReturn(Optional.of(order));
+        when(orderRepository.save(any(Order.class))).thenReturn(order);
+        when(orderMapper.toResponseDTO(order)).thenReturn(responseDTO);
+
+        //ACT-------------------------------------------------------------------------
+
+        OrderResponseDTO result = orderService.updateOrderStatus(1L, newStatus);
+
+        //ASSERT----------------------------------------------------------------------
+
+        assertThat(result).isNotNull();
+        assertThat(result.getStatus()).isEqualTo(OrderStatus.DELIVERED);
+
+        verify(orderRepository, times(1)).save(any(Order.class));
+    }
+
+    @Test
+    void updateOrderStatus_shouldThrowNotFoundException_whenOrderDoesNotExist() {
+
+        //ARRANGE---------------------------------------------------------------------
+
+        OrderStatus newStatus = OrderStatus.CANCELLED;
+
+        when(orderRepository.findById(99L)).thenReturn(Optional.empty());
+
+        //ACT AND ASSERT--------------------------------------------------------------
+
+        assertThatThrownBy(() -> orderService.updateOrderStatus(99L, newStatus))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("99");
+    }
+
+    @Test
+    void updateOrderStatus_shouldThrowInvalidOrderStatusTransitionException_whenTransitionIsInvalid() {
+
+        //ARRANGE---------------------------------------------------------------------
+
+        OrderStatus newStatus = OrderStatus.DELIVERED;
+
+        when(orderRepository.findById(1L)).thenReturn(Optional.of(order));
+
+
+        //ACT AND ASSERT--------------------------------------------------------------
+
+        assertThatThrownBy(() -> orderService.updateOrderStatus(1L, newStatus))
+                .isInstanceOf(InvalidOrderStatusTransitionException.class)
+                .hasMessageContaining("Invalid advance from PENDING to DELIVERED");
     }
 
     // =========================================================================
