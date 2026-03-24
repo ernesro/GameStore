@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
+
     public AuthController(AuthService authService) {
         this.authService = authService;
     }
@@ -32,14 +33,14 @@ public class AuthController {
             summary = "Authenticate user and generate JWT token",
             description = "Authenticates the user with provided credentials and returns a JWT token upon successful authentication.",
             operationId = "createToken",
-            tags = { "authentication" },
+            tags = {"authentication"},
             responses = {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Authentication successful, JWT token generated",
-                            content =  @Content(
+                            content = @Content(
                                     mediaType = "application/json",
-                                    schema =  @Schema(implementation = AuthResponse.class)
+                                    schema = @Schema(implementation = AuthResponse.class)
                             )
                     ),
                     @ApiResponse(

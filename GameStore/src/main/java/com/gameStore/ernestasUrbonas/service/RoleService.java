@@ -18,6 +18,6 @@ public class RoleService {
 
     public Role getRoleByName(String name) {
         return this.roleRepository.findByName(name)
-                .orElseThrow(() ->  new NotFoundException("Role not found with identifier: " + name));
+                .orElseThrow(() -> new NotFoundException("Role not found with identifier: " + name));
     }
 }

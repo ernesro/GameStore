@@ -35,14 +35,14 @@ public class StockController {
             summary = "Create a new stock",
             description = "Creates a new stock with the provided details.",
             operationId = "createStock",
-            tags = { "stocks" },
+            tags = {"stocks"},
             responses = {
                     @ApiResponse(
                             responseCode = "201",
                             description = "Stock created successfully",
                             content = @Content(
-                                            mediaType = "application/json",
-                                            schema = @Schema(implementation = StockDTO.class)
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = StockDTO.class)
                             )
                     )
             }
@@ -59,14 +59,14 @@ public class StockController {
      * Finds stock per warehouse and product IDs.
      *
      * @param warehouseId ID of the warehouse.
-     * @param productId ID of the product.
+     * @param productId   ID of the product.
      * @return StockDTO containing stock details.
      */
     @Operation(
             summary = "Find stock by warehouse and product IDs",
             description = "Retrieves stock details for a specific warehouse and product combination.",
             operationId = "findStockByWarehouseAndProduct",
-            tags = { "stocks" },
+            tags = {"stocks"},
             responses = {
                     @ApiResponse(
                             responseCode = "200",
@@ -91,16 +91,16 @@ public class StockController {
     /**
      * Update stock quantity.
      *
-     * @param productId ID of the product.
+     * @param productId   ID of the product.
      * @param warehouseId ID of the warehouse.
-     * @param quantity New quantity to be set.
+     * @param quantity    New quantity to be set.
      * @return Updated StockDTO.
      */
     @Operation(
             summary = "Update stock quantity",
             description = "Updates the stock quantity for a specific product in a specific warehouse.",
             operationId = "updateStockQuantity",
-            tags = { "stocks" },
+            tags = {"stocks"},
             responses = {
                     @ApiResponse(
                             responseCode = "200",

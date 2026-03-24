@@ -33,7 +33,7 @@ public class ProductService {
      * @param productDTO Data Transfer Object containing product details.
      * @return The created ProductDTO.
      */
-    public ProductDTO createProduct(ProductDTO productDTO){
+    public ProductDTO createProduct(ProductDTO productDTO) {
 
         Product product = this.productMapper.mapDTOToEntity(productDTO);
         Product savedProduct = this.productRepository.save(product);
@@ -45,7 +45,7 @@ public class ProductService {
      *
      * @return The list of all Products like ProductDTO.
      */
-    public List<ProductDTO> findAllProducts(){
+    public List<ProductDTO> findAllProducts() {
         List<Product> products = this.productRepository.findAll();
         return products.stream()
                 .map(this.productMapper::mapEntityToDTO)
@@ -70,7 +70,7 @@ public class ProductService {
      * @param updatedProductDTO Data Transfer Object containing updated product details.
      * @return The updated ProductDTO.
      */
-    public ProductDTO updateProduct(ProductDTO updatedProductDTO){
+    public ProductDTO updateProduct(ProductDTO updatedProductDTO) {
         Product existingProduct = this.productRepository.findById(updatedProductDTO.getId())
                 .orElseThrow(() -> new NotFoundException("Product not found with identifier: " + updatedProductDTO.getId()));
 
@@ -94,7 +94,7 @@ public class ProductService {
      */
     public void deleteProduct(Long id) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() ->  new NotFoundException("Product not found with identifier: " + id));
+                .orElseThrow(() -> new NotFoundException("Product not found with identifier: " + id));
         productRepository.delete(product);
     }
 }

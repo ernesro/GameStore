@@ -12,15 +12,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class WarehouseDTO {
 
-        private Long id;
+    private Long id;
 
-        @NotNull(message = "Name cannot be null")
-        private String name;
+    @NotNull(message = "Name cannot be null")
+    private String name;
 
-        private String location;
+    private String location;
 
-        @NotNull(message = "Capacity cannot be null")
-        @Min(100)
-        @Max(10000)
-        private Long capacity;
+    @NotNull(message = "Capacity cannot be null")
+    @Min(100)
+    @Max(10000)
+    private Long capacity;
 }

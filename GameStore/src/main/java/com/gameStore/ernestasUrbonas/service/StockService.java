@@ -91,7 +91,7 @@ public class StockService {
      * @return A ProductWarehousePair containing the Product and Warehouse.
      * @throws NotFoundException if either the product or warehouse is not found.
      */
-    private ProductWarehousePair getProductAndWarehouse (Long productId, Long warehouseId) {
+    private ProductWarehousePair getProductAndWarehouse(Long productId, Long warehouseId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new NotFoundException("Product not found"));
 
@@ -104,7 +104,8 @@ public class StockService {
     /**
      * A simple record to hold a Product and Warehouse pair.
      */
-    record ProductWarehousePair(Product product, Warehouse warehouse) { }
+    record ProductWarehousePair(Product product, Warehouse warehouse) {
+    }
 }
 
 

@@ -15,7 +15,9 @@ public class CustomUserDetails implements UserDetails {
     public CustomUserDetails(UserEntity user) {
         this.user = user;
     }
+
     private final UserEntity user;
+
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return user.getRoleEntities()
                 .stream()
@@ -24,12 +26,37 @@ public class CustomUserDetails implements UserDetails {
                 .collect(Collectors.toList());
     }
 
-    @Override public String getPassword() { return user.getPassword(); }
-    @Override public String getUsername() { return user.getUsername(); }
-    @Override public boolean isAccountNonExpired() { return true; }
-    @Override public boolean isAccountNonLocked() { return true; }
-    @Override public boolean isCredentialsNonExpired() { return true; }
-    @Override public boolean isEnabled() { return true; }
+    @Override
+    public String getPassword() {
+        return user.getPassword();
+    }
 
-    public Long getId() { return user.getId(); }
+    @Override
+    public String getUsername() {
+        return user.getUsername();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    public Long getId() {
+        return user.getId();
+    }
 }

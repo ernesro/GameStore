@@ -50,10 +50,11 @@ public class UserService {
 
     /**
      * Encrypt the user's password using BCrypt.
+     *
      * @param password
      * @return
      */
-    private String encryptPassword (String password) {
+    private String encryptPassword(String password) {
         return passwordEncoder.encode(password);
     }
 }

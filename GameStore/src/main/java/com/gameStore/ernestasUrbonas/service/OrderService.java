@@ -68,7 +68,7 @@ public class OrderService {
             StockDTO itemStock = stockService.findStockByWarehouseAndProduct(dto.getWarehouseId(), product.getId());
             int newStock = itemStock.getQuantity() - item.getQuantity();
 
-            if(newStock < 0)
+            if (newStock < 0)
                 throw new NegativeStockException
                         ("Cannot create the order. Actual Stock for " + product.getName()
                                 + " is " + itemStock.getQuantity() + " and the order needs " + item.getQuantity());
@@ -119,23 +119,23 @@ public class OrderService {
      */
 
     @Transactional
-    public OrderResponseDTO updateOrder(OrderUpdateDTO orderUpdateDTO){
+    public OrderResponseDTO updateOrder(OrderUpdateDTO orderUpdateDTO) {
         Order existingOrder = this.orderRepository.findById(orderUpdateDTO.getId())
                 .orElseThrow(() -> new NotFoundException("Order not found with identifier: " + orderUpdateDTO.getId()));
 
-        if(!existingOrder.getStatus().equals(OrderStatus.PENDING)){
+        if (!existingOrder.getStatus().equals(OrderStatus.PENDING)) {
             throw new ForbiddenException("Can not update an Order that is not PENDING state.");
         }
 
         existingOrder.setPrice(orderUpdateDTO.getPrice());
 
         existingOrder.setItems(
-                        orderUpdateDTO
-                                .getItems()
-                                .stream()
-                                .map(orderItemDTO -> orderItemRepository.findById(orderItemDTO.getId())
-                                        .orElseThrow(() -> new NotFoundException("OrderItem not found with id: " + orderItemDTO.getId())))
-                                .collect(Collectors.toList())
+                orderUpdateDTO
+                        .getItems()
+                        .stream()
+                        .map(orderItemDTO -> orderItemRepository.findById(orderItemDTO.getId())
+                                .orElseThrow(() -> new NotFoundException("OrderItem not found with id: " + orderItemDTO.getId())))
+                        .collect(Collectors.toList())
         );
 
         Order updatedOrder = orderRepository.save(existingOrder);
@@ -145,16 +145,16 @@ public class OrderService {
     /**
      * Update order status
      *
-     * @param orderId Order ID
+     * @param orderId   Order ID
      * @param newStatus New status for the Order
      * @return The updated OrderDTO.
      */
     @Transactional
-    public OrderResponseDTO updateOrderStatus(Long orderId, OrderStatus newStatus){
+    public OrderResponseDTO updateOrderStatus(Long orderId, OrderStatus newStatus) {
         Order existingOrder = this.orderRepository.findById(orderId)
                 .orElseThrow(() -> new NotFoundException("Order not found with identifier: " + orderId));
 
-        if(existingOrder.getStatus().canTransitionTo(newStatus)){
+        if (existingOrder.getStatus().canTransitionTo(newStatus)) {
             existingOrder.setStatus(newStatus);
         } else {
             throw new InvalidOrderStatusTransitionException("Invalid advance from " + existingOrder.getStatus() +
@@ -173,7 +173,7 @@ public class OrderService {
     @Transactional
     public void deleteOrder(Long id) {
         Order order = orderRepository.findById(id)
-                .orElseThrow(() ->  new NotFoundException("Order not found with identifier: " + id));
+                .orElseThrow(() -> new NotFoundException("Order not found with identifier: " + id));
 
         orderRepository.delete(order);
     }

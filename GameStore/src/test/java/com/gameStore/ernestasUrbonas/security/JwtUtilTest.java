@@ -20,7 +20,7 @@ public class JwtUtilTest {
     }
 
     @Test
-    public void generateToken_ShouldReturnAToken(){
+    public void generateToken_ShouldReturnAToken() {
 
         //ACT-------------------------------------------------------------------------
 
@@ -32,24 +32,24 @@ public class JwtUtilTest {
         assertThat(token).isNotEmpty();
     }
 
-   @Test
-   public void validateToken_ShouldReturnTrue(){
+    @Test
+    public void validateToken_ShouldReturnTrue() {
 
-       //ARRANGE---------------------------------------------------------------------
+        //ARRANGE---------------------------------------------------------------------
 
         String token = jwtUtil.generateToken("test", List.of("ADMIN"));
 
-       //ACT-------------------------------------------------------------------------
+        //ACT-------------------------------------------------------------------------
 
         Boolean result = jwtUtil.validateToken(token);
 
         //ASSERT----------------------------------------------------------------------
 
         assertThat(result).isTrue();
-   }
+    }
 
     @Test
-    public void validateToken_ShouldReturnFalse(){
+    public void validateToken_ShouldReturnFalse() {
 
         //ARRANGE---------------------------------------------------------------------
 
@@ -65,7 +65,7 @@ public class JwtUtilTest {
     }
 
     @Test
-    public void getUsernameFromToken_ShouldReturnTest(){
+    public void getUsernameFromToken_ShouldReturnTest() {
 
         //ARRANGE---------------------------------------------------------------------
 
@@ -82,7 +82,7 @@ public class JwtUtilTest {
     }
 
     @Test
-    public void getRoleFromToken_ShouldReturnADMIN(){
+    public void getRoleFromToken_ShouldReturnADMIN() {
 
         //ARRANGE---------------------------------------------------------------------
 

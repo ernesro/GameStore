@@ -36,14 +36,14 @@ public class UserController {
             summary = "Create a new user",
             description = "Creates a new user with the provided details.",
             operationId = "createUser",
-            tags = { "users" },
+            tags = {"users"},
             responses = {
                     @ApiResponse(
                             responseCode = "201",
                             description = "User created successfully",
                             content = @Content(
-                                            mediaType = "application/json",
-                                            schema = @Schema(implementation = UserDTO.class)
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = UserDTO.class)
                             )
                     )
             }

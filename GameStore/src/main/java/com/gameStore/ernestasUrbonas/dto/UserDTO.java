@@ -13,20 +13,20 @@ import java.util.Set;
 @AllArgsConstructor
 public class UserDTO {
 
-        private Long id;
+    private Long id;
 
-        @NotNull(message = "Name cannot be null")
-        @Size(min = 2, message = "Name must have at least 2 characters")
-        private String username;
+    @NotNull(message = "Name cannot be null")
+    @Size(min = 2, message = "Name must have at least 2 characters")
+    private String username;
 
-        @NotNull(message = "Password cannot be null")
-        @Size(min = 8, message = "Password must have at least 8 characters")
-        private String password;
+    @NotNull(message = "Password cannot be null")
+    @Size(min = 8, message = "Password must have at least 8 characters")
+    private String password;
 
-        @NotNull(message = "Name cannot be null")
-        @Size(min = 2, message = "Name must have at least 2 characters")
-        private String email;
+    @NotNull(message = "Name cannot be null")
+    @Size(min = 2, message = "Name must have at least 2 characters")
+    private String email;
 
-        @NotNull(message = "Name cannot be null")
-        private Set<String> roles;
+    @NotNull(message = "Name cannot be null")
+    private Set<String> roles;
 }

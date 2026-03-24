@@ -71,7 +71,7 @@ public class ProductServiceTest {
     // ===============================================================================
 
     @Test
-    public void createProduct_ShouldCreateAndReturnProductDTO(){
+    public void createProduct_ShouldCreateAndReturnProductDTO() {
 
         //ARRANGE---------------------------------------------------------------------
 
@@ -98,7 +98,7 @@ public class ProductServiceTest {
     // ===============================================================================
 
     @Test
-    public void findProductById_WithNotExistingId_ShouldThrowNotFoundException(){
+    public void findProductById_WithNotExistingId_ShouldThrowNotFoundException() {
 
         //ARRANGE---------------------------------------------------------------------
 
@@ -113,7 +113,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void findProductById_WithExistingId_ShouldReturnProductDTO(){
+    public void findProductById_WithExistingId_ShouldReturnProductDTO() {
 
         //ARRANGE---------------------------------------------------------------------
 
@@ -138,7 +138,7 @@ public class ProductServiceTest {
     // ===============================================================================
 
     @Test
-    public void findAllProducts_ShouldReturn_A_ListOfProductsDTO(){
+    public void findAllProducts_ShouldReturn_A_ListOfProductsDTO() {
 
         //ARRANGE---------------------------------------------------------------------
 
@@ -164,7 +164,7 @@ public class ProductServiceTest {
     // ===============================================================================
 
     @Test
-    public void updateProductById_WithExistingId_ShouldReturnProductDTO(){
+    public void updateProductById_WithExistingId_ShouldReturnProductDTO() {
 
         //ARRANGE---------------------------------------------------------------------
 
@@ -191,7 +191,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void updateProductById_WithNotExistingId_ShouldThrowNotFoundException(){
+    public void updateProductById_WithNotExistingId_ShouldThrowNotFoundException() {
 
         //ARRANGE---------------------------------------------------------------------
 
@@ -212,7 +212,7 @@ public class ProductServiceTest {
     // ===============================================================================
 
     @Test
-    public void deleteProductById_WithExistingId_ShouldRespondOk(){
+    public void deleteProductById_WithExistingId_ShouldRespondOk() {
 
         //ARRANGE---------------------------------------------------------------------
 
@@ -229,7 +229,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void deleteProductById_WithNotExistingId_ShouldThrowNotFoundException(){
+    public void deleteProductById_WithNotExistingId_ShouldThrowNotFoundException() {
 
         //ARRANGE---------------------------------------------------------------------
 

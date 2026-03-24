@@ -37,7 +37,7 @@ public class OrderController {
             summary = "Create a new order",
             description = "Creates a new order with the provided details.",
             operationId = "createOrder",
-            tags = { "orders" },
+            tags = {"orders"},
             responses = {
                     @ApiResponse(
                             responseCode = "201",
@@ -81,7 +81,7 @@ public class OrderController {
             summary = "Get all orders for a specific user",
             description = "Retrieves all orders associated with the specified user ID.",
             operationId = "getAllUserOrders",
-            tags = { "orders" },
+            tags = {"orders"},
             responses = {
                     @ApiResponse(
                             responseCode = "200",
@@ -108,13 +108,13 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getAllOrdersByUser(userId));
     }
 
-   @PutMapping
-   public ResponseEntity<OrderResponseDTO> updateOrder(@RequestBody OrderUpdateDTO orderUpdateDTO){
+    @PutMapping
+    public ResponseEntity<OrderResponseDTO> updateOrder(@RequestBody OrderUpdateDTO orderUpdateDTO) {
         return ResponseEntity.ok(orderService.updateOrder(orderUpdateDTO));
-   }
+    }
 
-   @PutMapping("/update-status")
-    public ResponseEntity<OrderResponseDTO> updateOrderStatus(@RequestParam Long orderId, OrderStatus newOrderStatus){
+    @PutMapping("/update-status")
+    public ResponseEntity<OrderResponseDTO> updateOrderStatus(@RequestParam Long orderId, OrderStatus newOrderStatus) {
         return ResponseEntity.ok(orderService.updateOrderStatus(orderId, newOrderStatus));
-   }
+    }
 }

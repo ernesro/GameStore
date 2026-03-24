@@ -1,3 +1,4 @@
 package com.gameStore.ernestasUrbonas.dto;
 
-public record ApiError(int status, String error, String message, String path) {}
+public record ApiError(int status, String error, String message, String path) {
+}

@@ -22,10 +22,9 @@ public class ProductController {
     private final ProductService productService;
 
     @Autowired
-    public ProductController(ProductService productService){
+    public ProductController(ProductService productService) {
         this.productService = productService;
     }
-
 
 
     /**
@@ -38,7 +37,7 @@ public class ProductController {
             summary = "Create a new product",
             description = "Creates a new product with the provided details.",
             operationId = "createProduct",
-            tags = { "products" },
+            tags = {"products"},
             responses = {
                     @ApiResponse(
                             responseCode = "201",
@@ -73,7 +72,6 @@ public class ProductController {
     }
 
 
-
     /**
      * Find all products.
      *
@@ -83,7 +81,7 @@ public class ProductController {
             summary = "Get all products",
             description = "Returns a list of all product",
             operationId = "findAllProducts",
-            tags = { "products" },
+            tags = {"products"},
             responses = {
                     @ApiResponse(
                             responseCode = "200",
@@ -105,7 +103,6 @@ public class ProductController {
     }
 
 
-
     /**
      * Find product by ID.
      *
@@ -116,7 +113,7 @@ public class ProductController {
             summary = "Find product by ID",
             description = "Returns a product by ID.",
             operationId = "findProductById",
-            tags = { "products" },
+            tags = {"products"},
             responses = {
                     @ApiResponse(
                             responseCode = "200",
@@ -144,7 +141,6 @@ public class ProductController {
     }
 
 
-
     /**
      * Update a product.
      *
@@ -155,7 +151,7 @@ public class ProductController {
             summary = "Update a product",
             description = "Updates an existing product with the provided details.",
             operationId = "updateProduct",
-            tags = { "products" },
+            tags = {"products"},
             responses = {
                     @ApiResponse(
                             responseCode = "200",
@@ -190,7 +186,6 @@ public class ProductController {
     }
 
 
-
     /**
      * Delete a product.
      *
@@ -201,7 +196,7 @@ public class ProductController {
             summary = "Delete a product",
             description = "Deletes a product by ID.",
             operationId = "deleteProduct",
-            tags = { "products" },
+            tags = {"products"},
             responses = {
                     @ApiResponse(
                             responseCode = "204",

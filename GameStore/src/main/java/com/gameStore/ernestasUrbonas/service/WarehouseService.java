@@ -61,7 +61,7 @@ public class WarehouseService {
      * @return List of WarehouseDTO.
      */
     public List<WarehouseDTO> getAllWarehouses() {
-        List <Warehouse> warehouses = warehouseRepository.findAll();
+        List<Warehouse> warehouses = warehouseRepository.findAll();
         return warehouses.stream()
                 .map(warehouseMapper::mapEntityToDTO)
                 .toList();
