@@ -82,6 +82,8 @@ DELETE /api/products/{id}
  
 POST   /api/orders
 GET    /api/orders?userId={id}
+PUT    /api/orders
+PUT    /api/orders/update-status?orderId={id}&newOrderStatus={status}
  
 GET    /api/stocks/search?warehouseId={id}&productId={id}
 POST   /api/stocks
@@ -103,7 +105,7 @@ http://localhost:8080/swagger-ui/index.html
  
 ## 🧪 Testing
  
-- **26 tests unitarios** con JUnit 5 y Mockito
+- **32 tests unitarios** con JUnit 5 y Mockito
 - Cobertura de servicios: `OrderService`, `ProductService`
 - Cobertura de seguridad: `JwtUtil`
 - Casos positivos y negativos cubiertos en todos los métodos
@@ -112,13 +114,14 @@ http://localhost:8080/swagger-ui/index.html
 ---
  
 ## 🚀 Roadmap
- 
-- [ ] Docker & Docker Compose para levantar el entorno fácilmente
-- [ ] Integración con **Kafka** para eventos asíncronos (emails, notificaciones)
-- [ ] Tests de integración con MockMvc
-- [ ] Refresh tokens y rate limiting
-- [ ] Descuento de stock al crear pedidos
+
+- [x] Descuento de stock al crear pedidos
+- [x] Máquina de estados para transiciones de pedidos
 - [ ] Autorización por roles con `@PreAuthorize`
+- [ ] Tests de integración con MockMvc
+- [ ] Integración con **Kafka** para eventos asíncronos (emails, notificaciones)
+- [ ] Refresh tokens y rate limiting
+- [ ] Docker & Docker Compose para levantar el entorno fácilmente
 - [ ] Despliegue en servidor Linux
  
 ---
