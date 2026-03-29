@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -47,7 +48,7 @@ public class StockController {
                     )
             }
     )
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     ResponseEntity<StockDTO> createStock(@Valid @RequestBody StockDTO stockDTO) {
         StockDTO createdStock = stockService.createStock(stockDTO);
@@ -82,6 +83,7 @@ public class StockController {
                     )
             }
     )
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/search")
     ResponseEntity<StockDTO> findStockByWarehouseAndProduct(@RequestParam Long warehouseId, @RequestParam Long productId) {
         StockDTO stockDTO = stockService.findStockByWarehouseAndProduct(warehouseId, productId);
@@ -116,6 +118,7 @@ public class StockController {
                     )
             }
     )
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/updateQuantity")
     ResponseEntity<StockDTO> updateStockQuantity(@RequestParam Long productId,
                                                  @RequestParam Long warehouseId,

@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,14 +19,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/warehouses")
 public class WarehouseController {
-   private final WarehouseService warehouseService;
+    private final WarehouseService warehouseService;
 
-   @Autowired
-   public WarehouseController(WarehouseService warehouseService) {
-       this.warehouseService = warehouseService;
-   }
-
-
+    @Autowired
+    public WarehouseController(WarehouseService warehouseService) {
+        this.warehouseService = warehouseService;
+    }
 
     /**
      * Create a new warehouse.
@@ -37,7 +36,7 @@ public class WarehouseController {
             summary = "Create a new warehouse",
             description = "Creates a new warehouse with the provided details.",
             operationId = "createWarehouse",
-            tags = { "warehouses" },
+            tags = {"warehouses"},
             responses = {
                     @ApiResponse(
                             responseCode = "201",
@@ -65,12 +64,12 @@ public class WarehouseController {
                     )
             }
     )
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<WarehouseDTO> creteWarehouse (@Valid @RequestBody WarehouseDTO warehouseDTO) {
+    public ResponseEntity<WarehouseDTO> creteWarehouse(@Valid @RequestBody WarehouseDTO warehouseDTO) {
         WarehouseDTO created = warehouseService.createWarehouse(warehouseDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
-
 
 
     /**
@@ -82,7 +81,7 @@ public class WarehouseController {
             summary = "Get all warehouses",
             description = "Returns a list of all warehouses.",
             operationId = "getAllWarehouses",
-            tags = { "warehouses" },
+            tags = {"warehouses"},
             responses = {
                     @ApiResponse(
                             responseCode = "200",
@@ -98,6 +97,7 @@ public class WarehouseController {
                     )
             }
     )
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<WarehouseDTO>> getAllWarehouses() {
         return ResponseEntity.ok(warehouseService.getAllWarehouses());
@@ -114,7 +114,7 @@ public class WarehouseController {
             summary = "Find warehouse by ID",
             description = "Returns a warehouse by ID.",
             operationId = "findWarehouseById",
-            tags = { "warehouses" },
+            tags = {"warehouses"},
             responses = {
                     @ApiResponse(
                             responseCode = "200",
@@ -136,12 +136,12 @@ public class WarehouseController {
                     )
             }
     )
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<WarehouseDTO> findWarehouseById(@PathVariable Long id) {
         WarehouseDTO warehouseDTO = warehouseService.findWarehouseById(id);
         return ResponseEntity.ok(warehouseDTO);
     }
-
 
 
     /**
@@ -155,7 +155,7 @@ public class WarehouseController {
             summary = "Update a warehouse",
             description = "Updates a warehouse with the provided details.",
             operationId = "updateWarehouse",
-            tags = { "warehouses" },
+            tags = {"warehouses"},
             responses = {
                     @ApiResponse(
                             responseCode = "200",
@@ -183,13 +183,13 @@ public class WarehouseController {
                     )
             }
     )
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<WarehouseDTO> updateWarehouse(@PathVariable Long id, @Valid @RequestBody WarehouseDTO warehouseDTO) {
         warehouseDTO.setId(id);
         WarehouseDTO updatedWarehouse = warehouseService.updateWarehouse(id, warehouseDTO);
         return ResponseEntity.ok(updatedWarehouse);
     }
-
 
 
     /**
@@ -201,7 +201,7 @@ public class WarehouseController {
             summary = "Delete a warehouse by ID",
             description = "Deletes a warehouse by its ID.",
             operationId = "deleteWarehouseById",
-            tags = { "warehouses" },
+            tags = {"warehouses"},
             responses = {
                     @ApiResponse(
                             responseCode = "204",
@@ -221,6 +221,7 @@ public class WarehouseController {
                     )
             }
     )
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteWarehouseById(@PathVariable Long id) {
         warehouseService.deleteWarehouseById(id);
