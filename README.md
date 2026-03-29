@@ -117,7 +117,7 @@ http://localhost:8080/swagger-ui/index.html
 
 - [x] Descuento de stock al crear pedidos
 - [x] Máquina de estados para transiciones de pedidos
-- [ ] Autorización por roles con `@PreAuthorize`
+- [x] Autorización por roles con `@PreAuthorize`
 - [ ] Tests de integración con MockMvc
 - [ ] Integración con **Kafka** para eventos asíncronos (emails, notificaciones)
 - [ ] Refresh tokens y rate limiting
