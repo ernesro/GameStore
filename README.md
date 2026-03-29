@@ -9,6 +9,15 @@ Backend REST API desarrollada como proyecto de portfolio personal, simulando el 
 El proyecto está construido con Spring Boot y PostgreSQL, aplicando principios de arquitectura en capas y seguridad con JWT. Está pensado para ser **realista** y profesional, no un tutorial ni un ejercicio académico.
  
 ---
+
+## 🚀 Quick Start
+
+1. Clona el repositorio
+2. Copia `.env.example` a `.env` y rellena tus valores
+3. Ejecuta `docker-compose up --build`
+4. Accede a Swagger en `http://localhost:8080/swagger-ui/index.html`
+
+---
  
 ## 🛠️ Stack tecnológico
  
@@ -121,7 +130,7 @@ http://localhost:8080/swagger-ui/index.html
 - [ ] Tests de integración con MockMvc
 - [ ] Integración con **Kafka** para eventos asíncronos (emails, notificaciones)
 - [ ] Refresh tokens y rate limiting
-- [ ] Docker & Docker Compose para levantar el entorno fácilmente
+- [x] Docker & Docker Compose para levantar el entorno fácilmente
 - [ ] Despliegue en servidor Linux
  
 ---
