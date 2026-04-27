@@ -128,7 +128,7 @@ http://localhost:8080/swagger-ui/index.html
 - [x] Máquina de estados para transiciones de pedidos
 - [x] Autorización por roles con `@PreAuthorize`
 - [ ] Tests de integración con MockMvc
-- [ ] Integración con **Kafka** para eventos asíncronos (emails, notificaciones)
+- [x] Integración con **Kafka** para eventos asíncronos (emails, notificaciones)
 - [ ] Refresh tokens y rate limiting
 - [x] Docker & Docker Compose para levantar el entorno fácilmente
 - [ ] Despliegue en servidor Linux
