@@ -16,19 +16,19 @@ public class KafkaConsumerService {
         this.emailService = emailService;
     }
 
-    @KafkaListener(topics = "${app.kafka.topics.order-created}", groupId = "gamestore-group")
+    @KafkaListener(topics = "${app.kafka.topics.order-created}", groupId = "gamestore-group", autoStartup = "false")
     public void consumeOrderCreated(String message) {
         log.info("Order created event received: {}", message);
         emailService.sendOrderConfirmation(message);
     }
 
-    @KafkaListener(topics = "${app.kafka.topics.order-status-changed}", groupId = "gamestore-group")
+    @KafkaListener(topics = "${app.kafka.topics.order-status-changed}", groupId = "gamestore-group", autoStartup = "false")
     public void consumeOrderStatusChanged(String message) {
         log.info("Order status changed event received: {}", message);
         emailService.sendOrderStatusChanged(message);
     }
 
-    @KafkaListener(topics = "${app.kafka.topics.low-stock}", groupId = "gamestore-group")
+    @KafkaListener(topics = "${app.kafka.topics.low-stock}", groupId = "gamestore-group", autoStartup = "false")
     public void consumeLowStock(String message) {
         log.info("Low stock event received: {}", message);
         emailService.sendLowStockAlert(message);
