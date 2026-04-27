@@ -8,6 +8,10 @@ import com.gameStore.ernestasUrbonas.exception.ForbiddenException;
 import com.gameStore.ernestasUrbonas.exception.InvalidOrderStatusTransitionException;
 import com.gameStore.ernestasUrbonas.exception.NegativeStockException;
 import com.gameStore.ernestasUrbonas.exception.NotFoundException;
+import com.gameStore.ernestasUrbonas.kafka.event.LowStockEvent;
+import com.gameStore.ernestasUrbonas.kafka.event.OrderCreatedEvent;
+import com.gameStore.ernestasUrbonas.kafka.event.OrderStatusChangedEvent;
+import com.gameStore.ernestasUrbonas.kafka.producer.KafkaProducerService;
 import com.gameStore.ernestasUrbonas.mapper.OrderMapper;
 import com.gameStore.ernestasUrbonas.model.Order;
 import com.gameStore.ernestasUrbonas.model.OrderItem;
@@ -33,15 +37,17 @@ public class OrderService {
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final OrderMapper orderMapper;
+    private final KafkaProducerService kafkaProducerService;
 
     @Autowired
-    public OrderService(StockService stockService, OrderRepository orderRepository, OrderItemRepository orderItemRepository, UserRepository userRepository, ProductRepository productRepository, OrderMapper orderMapper) {
+    public OrderService(StockService stockService, OrderRepository orderRepository, OrderItemRepository orderItemRepository, UserRepository userRepository, ProductRepository productRepository, OrderMapper orderMapper, KafkaProducerService kafkaProducerService) {
         this.stockService = stockService;
         this.orderRepository = orderRepository;
         this.orderItemRepository = orderItemRepository;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.orderMapper = orderMapper;
+        this.kafkaProducerService = kafkaProducerService;
     }
 
     /**
@@ -73,6 +79,11 @@ public class OrderService {
                         ("Cannot create the order. Actual Stock for " + product.getName()
                                 + " is " + itemStock.getQuantity() + " and the order needs " + item.getQuantity());
 
+            if (newStock <= 5)
+                kafkaProducerService.sendLowStockEvent(
+                        new LowStockEvent(product.getId(), dto.getWarehouseId(), itemStock.getId(), newStock)
+                );
+
             stockService.updateStockQuantity(product.getId(), dto.getWarehouseId(), newStock);
 
             item.setProduct(product);
@@ -83,7 +94,11 @@ public class OrderService {
         }
 
         order.setPrice(total);
-        return orderMapper.toResponseDTO(orderRepository.save(order));
+        Order savedOrder = orderRepository.save(order);
+        kafkaProducerService.sendOrderCreatedEvent(
+                new OrderCreatedEvent(savedOrder.getId(), savedOrder.getUser().getId(), savedOrder.getPrice())
+        );
+        return orderMapper.toResponseDTO(savedOrder);
     }
 
     /**
@@ -162,6 +177,9 @@ public class OrderService {
         }
 
         Order updatedOrder = orderRepository.save(existingOrder);
+        kafkaProducerService.sendOrderStatusChangedEvent(
+                new OrderStatusChangedEvent(existingOrder.getId(), existingOrder.getUser().getId(), newStatus)
+        );
         return this.orderMapper.toResponseDTO(updatedOrder);
     }
 
