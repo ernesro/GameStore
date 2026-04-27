@@ -129,7 +129,7 @@ http://localhost:8080/swagger-ui/index.html
 - [x] Autorización por roles con `@PreAuthorize`
 - [ ] Tests de integración con MockMvc
 - [x] Integración con **Kafka** para eventos asíncronos (emails, notificaciones)
-- [ ] Refresh tokens y rate limiting
+- [x] Refresh tokens y rate limiting
 - [x] Docker & Docker Compose para levantar el entorno fácilmente
 - [ ] Despliegue en servidor Linux
  
