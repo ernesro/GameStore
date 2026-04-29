@@ -29,7 +29,10 @@ El proyecto está construido con Spring Boot y PostgreSQL, aplicando principios 
 - **Maven**
 - **JUnit 5 + Mockito** — testing unitario
 - **Swagger / OpenAPI** — documentación de endpoints
- 
+- **Apache Kafka** — mensajería de eventos asíncronos
+- **Docker & Docker Compose** — containerización
+- **Bucket4j** — rate limiting
+
 ---
  
 ## 🏗️ Arquitectura y diseño
@@ -41,6 +44,8 @@ Arquitectura en capas para separar responsabilidades:
 - **Repositories** → Persistencia de datos
 - **Mappers** → Conversión entre entidades y DTOs
 - **Security** → Autenticación y autorización con JWT
+- **Kafka** → Eventos asíncronos (pedidos, stock, notificaciones)
+- **Filter** → Rate limiting por IP
  
 Se aplican principios **SOLID**, separation of concerns y uso de **DTOs** para no exponer entidades directamente.
  
@@ -53,7 +58,9 @@ Se aplican principios **SOLID**, separation of concerns y uso de **DTOs** para n
 - Filtro JWT personalizado con `OncePerRequestFilter`
 - Protección de endpoints por autenticación
 - Manejo global de excepciones con `@RestControllerAdvice`
- 
+- Refresh tokens con persistencia en base de datos
+- Rate limiting por IP con Bucket4j (20 req/min)
+- Autorización por roles con @PreAuthorize
 ---
  
 ## 📦 Modelo de dominio
@@ -81,6 +88,7 @@ Relaciones modeladas de forma realista para e-commerce.
  
 ```http
 POST   /auth/login
+POST   /auth/refresh
 POST   /api/users
  
 GET    /api/products
@@ -128,7 +136,7 @@ http://localhost:8080/swagger-ui/index.html
 - [x] Máquina de estados para transiciones de pedidos
 - [x] Autorización por roles con `@PreAuthorize`
 - [ ] Tests de integración con MockMvc
-- [x] Integración con **Kafka** para eventos asíncronos (emails, notificaciones)
+- [x] Integración con **Kafka** para eventos asíncronos (emails, notificaciones, stock)
 - [x] Refresh tokens y rate limiting
 - [x] Docker & Docker Compose para levantar el entorno fácilmente
 - [ ] Despliegue en servidor Linux
