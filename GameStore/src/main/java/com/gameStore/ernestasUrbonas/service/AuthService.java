@@ -9,7 +9,6 @@ import com.gameStore.ernestasUrbonas.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,20 +22,22 @@ public class AuthService {
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
+    private final RefreshTokenService refreshTokenService;
 
     @Autowired
     public AuthService(AuthenticationManager authManager,
                        UserRepository userRepository,
                        JwtUtil jwtUtil,
-                       PasswordEncoder passwordEncoder) {
+                       PasswordEncoder passwordEncoder, RefreshTokenService refreshTokenService) {
         this.authManager = authManager;
         this.userRepository = userRepository;
         this.jwtUtil = jwtUtil;
         this.passwordEncoder = passwordEncoder;
+        this.refreshTokenService = refreshTokenService;
     }
 
     public AuthResponse login(AuthRequest request) {
-        Authentication authentication = authManager.authenticate(
+        authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
         );
 
@@ -46,7 +47,9 @@ public class AuthService {
         List<String> roles = user.getRoleEntities().stream().map(Role::getName).collect(Collectors.toList());
         String token = jwtUtil.generateToken(user.getUsername(), roles);
 
-        return new AuthResponse(token, user.getUsername(), roles);
+        String refreshToken = refreshTokenService.createRefreshToken(user.getUsername());
+
+        return new AuthResponse(token, user.getUsername(), roles, refreshToken);
     }
 
     public AuthResponse register(String username, String rawPassword) {

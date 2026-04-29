@@ -2,7 +2,9 @@ package com.gameStore.ernestasUrbonas.controller;
 
 import com.gameStore.ernestasUrbonas.dto.AuthRequest;
 import com.gameStore.ernestasUrbonas.dto.AuthResponse;
+import com.gameStore.ernestasUrbonas.model.RefreshToken;
 import com.gameStore.ernestasUrbonas.service.AuthService;
+import com.gameStore.ernestasUrbonas.service.RefreshTokenService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -18,9 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
+    private final RefreshTokenService refreshTokenService;
 
-    public AuthController(AuthService authService) {
+    public AuthController(AuthService authService, RefreshTokenService refreshTokenService) {
         this.authService = authService;
+        this.refreshTokenService = refreshTokenService;
     }
 
     /**
@@ -53,5 +57,12 @@ public class AuthController {
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
         AuthResponse res = authService.login(request);
         return ResponseEntity.ok(res);
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<String> refresh(@RequestBody String refreshToken) {
+        RefreshToken token = refreshTokenService.validateRefreshToken(refreshToken);
+        String newAccessToken = refreshTokenService.refreshAccessToken(token.getToken());
+        return ResponseEntity.ok(newAccessToken);
     }
 }
