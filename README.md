@@ -61,6 +61,7 @@ Se aplican principios **SOLID**, separation of concerns y uso de **DTOs** para n
 - Refresh tokens con persistencia en base de datos
 - Rate limiting por IP con Bucket4j (20 req/min)
 - Autorización por roles con @PreAuthorize
+
 ---
  
 ## 📦 Modelo de dominio
@@ -121,11 +122,11 @@ http://localhost:8080/swagger-ui/index.html
 ---
  
 ## 🧪 Testing
- 
-- **32 tests unitarios** con JUnit 5 y Mockito
-- Cobertura de servicios: `OrderService`, `ProductService`
-- Cobertura de seguridad: `JwtUtil`
-- Casos positivos y negativos cubiertos en todos los métodos
+
+- **43 tests** con JUnit 5 y Mockito
+- **32 tests unitarios** — `OrderService`, `ProductService`, `JwtUtil`
+- **11 tests de integración** con MockMvc — `ProductController`, `OrderController`
+- Casos positivos, negativos y de seguridad cubiertos
 - Patrón AAA (Arrange, Act, Assert) aplicado consistentemente
  
 ---
@@ -135,7 +136,7 @@ http://localhost:8080/swagger-ui/index.html
 - [x] Descuento de stock al crear pedidos
 - [x] Máquina de estados para transiciones de pedidos
 - [x] Autorización por roles con `@PreAuthorize`
-- [ ] Tests de integración con MockMvc
+- [x] Tests de integración con MockMvc
 - [x] Integración con **Kafka** para eventos asíncronos (emails, notificaciones, stock)
 - [x] Refresh tokens y rate limiting
 - [x] Docker & Docker Compose para levantar el entorno fácilmente
