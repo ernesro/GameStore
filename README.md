@@ -12,7 +12,7 @@ El proyecto está construido con Spring Boot y PostgreSQL, aplicando principios 
 
 ## 🔗 Demo en vivo
 
-[genuine-chimera-394d34.netlify.app](https://genuine-chimera-394d34.netlify.app/)
+[gamestore-ernestas.netlify.app](https://gamestore-ernestas.netlify.app/)
 
 > Demo de frontend con datos de ejemplo. El backend real (Java + Spring Boot) está en este repositorio.
 
