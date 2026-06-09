@@ -10,6 +10,14 @@ El proyecto está construido con Spring Boot y PostgreSQL, aplicando principios 
  
 ---
 
+## 🔗 Demo en vivo
+
+[genuine-chimera-394d34.netlify.app](https://genuine-chimera-394d34.netlify.app/)
+
+> Demo de frontend con datos de ejemplo. El backend real (Java + Spring Boot) está en este repositorio.
+
+---
+
 ## 🚀 Quick Start
 
 1. Clona el repositorio
@@ -140,7 +148,6 @@ http://localhost:8080/swagger-ui/index.html
 - [x] Integración con **Kafka** para eventos asíncronos (emails, notificaciones, stock)
 - [x] Refresh tokens y rate limiting
 - [x] Docker & Docker Compose para levantar el entorno fácilmente
-- [ ] Despliegue en servidor Linux
  
 ---
  
