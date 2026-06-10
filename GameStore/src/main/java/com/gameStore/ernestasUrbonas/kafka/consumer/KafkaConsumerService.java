@@ -3,10 +3,12 @@ package com.gameStore.ernestasUrbonas.kafka.consumer;
 import com.gameStore.ernestasUrbonas.service.EmailService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 @Slf4j
+@ConditionalOnProperty(name = "app.kafka.enabled", havingValue = "true")
 @Service
 public class KafkaConsumerService {
     private final EmailService emailService;

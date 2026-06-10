@@ -4,9 +4,12 @@ import com.gameStore.ernestasUrbonas.kafka.event.LowStockEvent;
 import com.gameStore.ernestasUrbonas.kafka.event.OrderCreatedEvent;
 import com.gameStore.ernestasUrbonas.kafka.event.OrderStatusChangedEvent;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+
+@ConditionalOnProperty(name = "app.kafka.enabled", havingValue = "true")
 @Service
 public class KafkaProducerService {
 

@@ -37,16 +37,22 @@ public class OrderService {
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final OrderMapper orderMapper;
-    private final KafkaProducerService kafkaProducerService;
+    private KafkaProducerService kafkaProducerService;
 
     @Autowired
-    public OrderService(StockService stockService, OrderRepository orderRepository, OrderItemRepository orderItemRepository, UserRepository userRepository, ProductRepository productRepository, OrderMapper orderMapper, KafkaProducerService kafkaProducerService) {
+    public OrderService(StockService stockService, OrderRepository orderRepository,
+                        OrderItemRepository orderItemRepository, UserRepository userRepository,
+                        ProductRepository productRepository, OrderMapper orderMapper) {
         this.stockService = stockService;
         this.orderRepository = orderRepository;
         this.orderItemRepository = orderItemRepository;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.orderMapper = orderMapper;
+    }
+
+    @Autowired(required = false)
+    public void setKafkaProducerService(KafkaProducerService kafkaProducerService) {
         this.kafkaProducerService = kafkaProducerService;
     }
 
@@ -80,9 +86,11 @@ public class OrderService {
                                 + " is " + itemStock.getQuantity() + " and the order needs " + item.getQuantity());
 
             if (newStock <= 5)
-                kafkaProducerService.sendLowStockEvent(
-                        new LowStockEvent(product.getId(), dto.getWarehouseId(), itemStock.getId(), newStock)
-                );
+                if (kafkaProducerService != null) {
+                    kafkaProducerService.sendLowStockEvent(
+                            new LowStockEvent(product.getId(), dto.getWarehouseId(), itemStock.getId(), newStock)
+                    );
+                }
 
             stockService.updateStockQuantity(product.getId(), dto.getWarehouseId(), newStock);
 
@@ -95,9 +103,11 @@ public class OrderService {
 
         order.setPrice(total);
         Order savedOrder = orderRepository.save(order);
-        kafkaProducerService.sendOrderCreatedEvent(
-                new OrderCreatedEvent(savedOrder.getId(), savedOrder.getUser().getId(), savedOrder.getPrice())
-        );
+        if (kafkaProducerService != null) {
+            kafkaProducerService.sendOrderCreatedEvent(
+                    new OrderCreatedEvent(savedOrder.getId(), savedOrder.getUser().getId(), savedOrder.getPrice())
+            );
+        }
         return orderMapper.toResponseDTO(savedOrder);
     }
 
@@ -177,9 +187,11 @@ public class OrderService {
         }
 
         Order updatedOrder = orderRepository.save(existingOrder);
-        kafkaProducerService.sendOrderStatusChangedEvent(
-                new OrderStatusChangedEvent(existingOrder.getId(), existingOrder.getUser().getId(), newStatus)
-        );
+        if (kafkaProducerService != null) {
+            kafkaProducerService.sendOrderStatusChangedEvent(
+                    new OrderStatusChangedEvent(existingOrder.getId(), existingOrder.getUser().getId(), newStatus)
+            );
+        }
         return this.orderMapper.toResponseDTO(updatedOrder);
     }
 
