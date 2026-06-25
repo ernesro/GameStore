@@ -97,7 +97,7 @@ public class WarehouseController {
                     )
             }
     )
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping
     public ResponseEntity<List<WarehouseDTO>> getAllWarehouses() {
         return ResponseEntity.ok(warehouseService.getAllWarehouses());
@@ -136,7 +136,7 @@ public class WarehouseController {
                     )
             }
     )
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<WarehouseDTO> findWarehouseById(@PathVariable Long id) {
         WarehouseDTO warehouseDTO = warehouseService.findWarehouseById(id);

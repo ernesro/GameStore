@@ -83,7 +83,7 @@ public class StockController {
                     )
             }
     )
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("/search")
     ResponseEntity<StockDTO> findStockByWarehouseAndProduct(@RequestParam Long warehouseId, @RequestParam Long productId) {
         StockDTO stockDTO = stockService.findStockByWarehouseAndProduct(warehouseId, productId);
