@@ -1,0 +1,3 @@
+UPDATE users
+SET password = '$2a$10$KNVUgN1Z1X2AZ6N3nQZ4ROnRjMEvcU5argGtVZtlPkRVp3g8DoOiO'
+WHERE id = 1;
