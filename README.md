@@ -12,9 +12,23 @@ El proyecto está construido con Spring Boot y PostgreSQL, aplicando principios 
 
 ## 🔗 Demo en vivo
 
+#### 🎨 Frontend Demo
+
 [gamestore-ernestas.netlify.app](https://gamestore-ernestas.netlify.app/)
 
-> Demo de frontend con datos de ejemplo. El backend real (Java + Spring Boot) está en este repositorio.
+> Demo visual del frontend. Actualmente utiliza datos de ejemplo y no está conectado en tiempo real al backend.
+
+---
+
+#### ⚙️ Backend API (desplegada en Render)
+
+https://gamestore-api-uycr.onrender.com
+
+##### 📄 Swagger Documentation
+
+https://gamestore-api-uycr.onrender.com/swagger-ui/index.html#/
+
+> API REST desarrollada con Java + Spring Boot y desplegada en Render. Documentación interactiva disponible en Swagger.
 
 ---
 
