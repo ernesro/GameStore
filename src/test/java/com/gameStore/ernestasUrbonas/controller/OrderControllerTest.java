@@ -66,7 +66,7 @@ public class OrderControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "USER")
+    @WithMockUser(roles = "ADMIN")
     void createNewOrder_shouldReturn201() throws Exception {
         when(orderService.createOrder(any(OrderRequestDTO.class))).thenReturn(orderResponseDTO);
 
@@ -95,7 +95,7 @@ public class OrderControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "USER")
+    @WithMockUser(roles = "ADMIN")
     void createNewOrder_shouldReturn404() throws Exception {
         when(orderService.createOrder(any(OrderRequestDTO.class)))
                 .thenThrow(new NotFoundException("Warehouse not found"));
@@ -108,7 +108,7 @@ public class OrderControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "USER")
+    @WithMockUser(roles = "ADMIN")
     void createNewOrder_shouldReturn400() throws Exception {
         when(orderService.createOrder(any(OrderRequestDTO.class)))
                 .thenThrow(new NegativeStockException("Not enough Stock"));
