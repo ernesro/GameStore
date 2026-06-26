@@ -1,4 +1,6 @@
 # 🎮 Video Game Store API
+
+![Swagger UI](docs/images/swagger.png)
  
 Backend REST API desarrollada como proyecto de portfolio personal, simulando el backend de una tienda online de videojuegos. El objetivo es mostrar cómo construyo APIs **claras, mantenibles y seguras** siguiendo buenas prácticas.
  
@@ -58,6 +60,8 @@ https://gamestore-api-uycr.onrender.com/swagger-ui/index.html#/
 ---
  
 ## 🏗️ Arquitectura y diseño
+
+![Arquitectura](docs/images/gamestore_architecture.svg)
  
 Arquitectura en capas para separar responsabilidades:
  
@@ -145,9 +149,11 @@ http://localhost:8080/swagger-ui/index.html
  
 ## 🧪 Testing
 
-- **43 tests** con JUnit 5 y Mockito
+![Tests](docs/images/test.png)
+
+- **44 tests** con JUnit 5 y Mockito
 - **32 tests unitarios** — `OrderService`, `ProductService`, `JwtUtil`
-- **11 tests de integración** con MockMvc — `ProductController`, `OrderController`
+- **12 tests de integración** con MockMvc — `ProductController`, `OrderController`
 - Casos positivos, negativos y de seguridad cubiertos
 - Patrón AAA (Arrange, Act, Assert) aplicado consistentemente
  
